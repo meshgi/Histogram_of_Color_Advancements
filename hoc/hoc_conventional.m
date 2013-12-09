@@ -1,5 +1,5 @@
-function freq = hoc_conventional (img , msk)
-m = 8;  % single color channel quantization
+function [freq ctrs] = hoc_conventional (img , msk)
+m = 4;  % single color channel quantization
 
 q = linspace(1,255,m);
 ctrs = setprod (q,q,q);
