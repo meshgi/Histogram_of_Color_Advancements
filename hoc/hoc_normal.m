@@ -1,13 +1,8 @@
-function [freq ctrs] = hoc_conventional (img , msk)
-m = 4;  % single color channel quantization
+function freq = hoc_normal (img, ctrs)
 
-q = linspace(1,255,m);
-ctrs = setprod (q,q,q);
-
-img = imread(img);
-msk = imread(msk);
 img_reshaped = reshape( img, size(img,1)*size(img,2), size(img,3) );
-img_valid = img_reshaped(find(msk==1),:);
+% img_valid = img_reshaped(find(msk==1),:);
+img_valid = img_reshaped; % no bkg mask
 
 num_pixels = size( img_valid, 1 );                                                % fg pixel count
 num_bins = size(ctrs,1);                                                     % bin count
