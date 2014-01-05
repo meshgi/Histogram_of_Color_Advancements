@@ -21,10 +21,10 @@ obj_cnt = 3;
 % hoc_name = 'clustering,g3,avg';  hoc_param = 40;
 % hoc_name = 'conventional,g5,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g5,avg';  hoc_param = 40;
-hoc_name = 'conventional,g2,wei';  hoc_param = 5;
+% hoc_name = 'conventional,g2,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g2,wei';  hoc_param = 40;
 % hoc_name = 'conventional,g3,wei';  hoc_param = 5;
-% hoc_name = 'clustering,g3,wei';  hoc_param = 40;
+hoc_name = 'clustering,g3,wei';  hoc_param = 40;
 % hoc_name = 'conventional,g5,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g5,wei';  hoc_param = 40;
 % hoc_name = 'conventional,g2';  hoc_param = 5;
@@ -38,10 +38,12 @@ hoc_update = 'moving average';
 
 % hoc_dist_name = 'L1';
 % hoc_dist_name = 'L2';
-% hoc_dist_name = 'correlation';
+hoc_dist_name = 'correlation';
 % hoc_dist_name = 'chi-square';
-hoc_dist_name = 'intersection';
+% hoc_dist_name = 'intersection';
 % hoc_dist_name = 'bhattacharyya';
+% hoc_dist_name = 'kl-divergance';
+
 
 % hoc_dist_name = 'L1,avg';
 % hoc_dist_name = 'L2,avg';
@@ -49,6 +51,7 @@ hoc_dist_name = 'intersection';
 % hoc_dist_name = 'chi-square,avg';
 % hoc_dist_name = 'intersection,avg';
 % hoc_dist_name = 'bhattacharyya,avg';
+% hoc_dist_name = 'kl-divergance,avg';
 
 % hoc_dist_name = 'L1,wei';
 % hoc_dist_name = 'L2,wei';
@@ -56,23 +59,23 @@ hoc_dist_name = 'intersection';
 % hoc_dist_name = 'chi-square,wei';
 % hoc_dist_name = 'intersection,wei';
 % hoc_dist_name = 'bhattacharyya,wei';
-
+% hoc_dist_name = 'kl-divergance,wei';
 
 % read all file names
 disp('Loading Data...');
 for i = 1:obj_cnt
-    obj_img_list{i} = dir(['data/obj' num2str(i) '/*.jpg']);
-    obj_msk_list{i} = dir(['data/obj' num2str(i) '/*.bmp']);
+    obj_img_list{i} = dir(['data/scenario 1/obj' num2str(i) '/*.jpg']);
+    obj_msk_list{i} = dir(['data/scenario 1/obj' num2str(i) '/*.bmp']);
 end
 n = length(obj_img_list{1,1});
 
-ctrs = hoc_init ( hoc_name , 'data/frame_0455.jpg', hoc_param);
+ctrs = hoc_init ( hoc_name , imread('data/scenario 1/frame_0455.jpg'), hoc_param);
 
 for o = 1:obj_cnt
     disp (['Calculating HOC for Obj ' num2str(o)]);
     for i = 1:n
-        img = imread(['data/obj' num2str(o) '/' obj_img_list{1,o}(i).name]);
-        msk = imread(['data/obj' num2str(o) '/' obj_msk_list{1,o}(i).name]);
+        img = imread(['data/scenario 1/obj' num2str(o) '/' obj_img_list{1,o}(i).name]);
+        msk = imread(['data/scenario 1/obj' num2str(o) '/' obj_msk_list{1,o}(i).name]);
 
         r = fg_bg_ratio ( hoc_name , msk );
         h = hoc ( hoc_name , img , ctrs , r);
@@ -223,15 +226,25 @@ disp(['Template      ' mat2str(s3)]);
 disp(['Template(U)   ' mat2str(s4)]);
 
 
+%% Total Results
+% s5(1) = mean(intra_sim(:)) * 100;   s5(2) = var(intra_sim(:)) * 100;
+% s6(1) = mean(s2);   s6(2) = var( [squeeze(inter_sim(1,2,:)) ; squeeze(inter_sim(1,3,:)) ; squeeze(inter_sim(2,3,:))])*100;
+% s7(1) = mean(s3);   s7(2) = var(template_sim(:))*100;
+% s8(1) = mean(s4);   s8(2) = var(utemplate_sim(:))*100;
+% 
+% disp(' ');
+% disp(['Total (mean/var) Intra         ' mat2str(s5)]);
+% disp(['Total (mean/var) Inter         ' mat2str(s6)]);
+% disp(['Total (mean/var) Template      ' mat2str(s7)]);
+% disp(['Total (mean/var) Template(U)   ' mat2str(s8)]);
+% 
 
-% RUN the algorithm looking for template in differentscales using sliding
-% window (scales = x0.5 and x2), find the HOC and distance of all of them,
-% and calculate the probability of the template itself, comparing to all
-% other candidates
 
-% RUN the algorithm over the sequence of dataset, looking for box. and do
-% the tracking and draw success plot, if (sz = intialal size, try sz,sz x
-% 2, sx / 2, sz + 10, sz - 10 adn sliding window over all image)
+
+
+
+%% Ideas
 
 % ADD Confidence Weighted Grid -> to make a single HOC, OR to combine
 % distances
+

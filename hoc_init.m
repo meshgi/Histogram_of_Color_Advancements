@@ -6,7 +6,7 @@ function ctrs = hoc_init ( method , init_frame , hoc_param)
             ctrs = setprod (q,q,q);
 
         case {'clustering','clustering,g2,avg','clustering,g3,avg','clustering,g5,avg','clustering,g2,wei','clustering,g3,wei','clustering,g5,wei'}
-            img = imread(init_frame);
+            img = init_frame;
             % get all points of image, sample them choosing points in equivalent
             % distance
             all_pixels = reshape (img(:,:,1:3) , size(img,1) * size(img,2) , size(img,3));

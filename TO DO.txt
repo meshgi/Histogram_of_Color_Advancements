@@ -1,0 +1,48 @@
+PREPARATIONS:
+=============
+* Download video databases
+* Read frames from video data
+* Background calculation and mask generation for each video
+* Download library of background separation
+* Tag videos for features, find best combination <hoc,dist, mu> for that and use a supervised learning to predict best combination
+
+
+HOC:
+====
+* Color Histogram Peak Selection
+* Using only bins from the full set that foreground is not zero in them
+* HSV Space
+* Add V channel of HSV space to RGB to have RGB-V space
+* JND HOC
+* Gridding using adaptive vertical projection
+* Gridding only vertically (2x1, 3x1, 5x1)
+
+
+DISTANCES:
+==========
+* Diffusion Distance
+* Earth Mover Distance
+
+
+MODEL UPDATE:
+=============
+* Model update: 5 recent frames
+* Model update: Grid based update (averaging, weighted, beta dist, ...)
+
+
+VISUALIZATION:
+==============
+* Visualize sliding window with box color indicating similarity to template and showing the ground truth position
+* Similarity map and ranking works as alpha blend of the color
+* Visualize the similarity of BB boxes and template as heat map, the similarity is the color of BB center
+
+
+FURTHER PROCESSING:
+===================
+* Compare Each Distance measure over different HOC schemes, for intra and template
+* Calculate inter to intra ratio for each combination (the smaller, the better)
+
+
+
+
+

@@ -26,6 +26,9 @@ function sim = hoc_similarity ( method, h1 , h2 )
         case 'bhattacharyya'
             d = dist_bhattacharyya ( h1 , h2 );
             sim = 1 - d;
+        case 'kl-divergance'
+            d = dist_kl ( h1 , h2 );
+            sim = max(0,1 - d);
     end
 
 end
