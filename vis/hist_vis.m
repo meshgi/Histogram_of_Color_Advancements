@@ -18,11 +18,7 @@ for i = 1:size(h,2)
     hold on;
 end
 
-<<<<<<< HEAD
 xlim([0 size(h,2)+1]);
-=======
-xlim([0 size(h,2)]);
->>>>>>> Major Revision
 ylim([0 0.1]);
 
 hold off;

@@ -82,7 +82,7 @@ utemplate_hoc = template_hoc;
 n = ss_idx; %size(bbs,1); % DEBUG MODE
 
 %% Calculating HOC
-for fr = 2:5%num_frames
+for fr = 2:num_frames
     tic
     [img, ~] =  read_frame(vid_param, directory, fr);
     bb = grt(1:4,fr)';

@@ -10,7 +10,7 @@ clc
 clear
 close all
 
-option_verbose = false;
+option_verbose = true;
 
 obj_cnt = 3;
 % hoc_name = 'conventional';  hoc_param = 5;
@@ -114,6 +114,7 @@ for o = 1:obj_cnt
 %     hold on
 end
 % hold off
+clf
 pl= plot (1:n-1 ,intra_sim(1,:) ,'r-',1:n-1 , intra_sim(2,:), 'g-',1:n-1 , intra_sim(3,:),'b-');
 set(pl,'LineWidth',2);
 legend ('obj1','obj2','obj3','Location', 'SouthEast');
@@ -142,6 +143,7 @@ o1o2 = squeeze(inter_sim(1,2,:));
 o2o3 = squeeze(inter_sim(2,3,:));
 o1o3 = squeeze(inter_sim(1,3,:));
 
+clf
 pl= plot (1:n ,o1o2 ,'k-',1:n , o2o3, 'c-',1:n , o1o3,'m-');
 set(pl,'LineWidth',2);
 legend ('obj1-obj2','obj2-obj3','obj1-obj3','Location', 'SouthEast');
@@ -175,6 +177,7 @@ for o = 1:obj_cnt
 %     hold on
 end
 % hold off
+clf
 pl= plot (1:n-1 ,intra_sim(1,:) ,'r-',1:n-1 , template_sim(2,:), 'g-',1:n-1 , intra_sim(3,:),'b-');
 set(pl,'LineWidth',2);
 legend ('obj1','obj2','obj3','Location', 'SouthWest');
@@ -206,6 +209,8 @@ for o = 1:obj_cnt
 %     hold on
 end
 % hold off
+
+clf
 pl= plot (1:n-1 ,intra_sim(1,:) ,'r-',1:n-1 , utemplate_sim(2,:), 'g-',1:n-1 , intra_sim(3,:),'b-');
 set(pl,'LineWidth',2);
 legend ('obj1','obj2','obj3','Location', 'SouthWest');
@@ -227,18 +232,19 @@ disp(['Template(U)   ' mat2str(s4)]);
 
 
 %% Total Results
-% s5(1) = mean(intra_sim(:)) * 100;   s5(2) = var(intra_sim(:)) * 100;
-% s6(1) = mean(s2);   s6(2) = var( [squeeze(inter_sim(1,2,:)) ; squeeze(inter_sim(1,3,:)) ; squeeze(inter_sim(2,3,:))])*100;
-% s7(1) = mean(s3);   s7(2) = var(template_sim(:))*100;
-% s8(1) = mean(s4);   s8(2) = var(utemplate_sim(:))*100;
-% 
-% disp(' ');
-% disp(['Total (mean/var) Intra         ' mat2str(s5)]);
-% disp(['Total (mean/var) Inter         ' mat2str(s6)]);
-% disp(['Total (mean/var) Template      ' mat2str(s7)]);
-% disp(['Total (mean/var) Template(U)   ' mat2str(s8)]);
-% 
+s5(1) = mean(intra_sim(:)) * 100;   s5(2) = var(intra_sim(:)) * 100;
+s6(1) = mean(s2);   s6(2) = var( [squeeze(inter_sim(1,2,:)) ; squeeze(inter_sim(1,3,:)) ; squeeze(inter_sim(2,3,:))])*100;
+s7(1) = mean(s3);   s7(2) = var(template_sim(:))*100;
+s8(1) = mean(s4);   s8(2) = var(utemplate_sim(:))*100;
 
+disp(' ');
+disp(['Total (mean/var) Intra         ' mat2str(s5)]);
+disp(['Total (mean/var) Inter         ' mat2str(s6)]);
+disp(['Total (mean/var) Template      ' mat2str(s7)]);
+disp(['Total (mean/var) Template(U)   ' mat2str(s8)]);
+
+s9 = sqrt(s5(1) * (100-s6(1)));
+disp(['Score of This Combination (intra*(1-inter)):   '  num2str(s9)]);
 
 
 
