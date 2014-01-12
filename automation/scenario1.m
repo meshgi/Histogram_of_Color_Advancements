@@ -1,6 +1,6 @@
 function s = scenario1 (hoc_name,gridding,hoc_param,hoc_update,hoc_dist_name)
 
-hoc_name = [hoc_name ',' gridding];
+hoc_name = [hoc_name gridding];
 
 obj_cnt = 3;
 option_verbose = false;
@@ -106,6 +106,7 @@ for o = 1:obj_cnt
     disp(['Obj' num2str(o) ' Template Similarity Calculation.'] );
     for i = 2:n
         hoc1 = frame_obj{i,o}.hoc; % this frame
+        hoc2 = template_update ( hoc_update , hoc2 , hoc1 , i );
         
         % visualization of hoc differences
         if (option_verbose)

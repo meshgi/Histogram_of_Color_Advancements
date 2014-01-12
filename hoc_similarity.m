@@ -1,4 +1,4 @@
-function sim = hoc_similarity ( method, h1 , h2 )
+function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 )
 
     if (length(h1) ~= length(h2))
         sim = -1;
@@ -29,6 +29,95 @@ function sim = hoc_similarity ( method, h1 , h2 )
         case 'kl-divergance'
             d = dist_kl ( h1 , h2 );
             sim = max(0,1 - d);
+        case 'diffusion'
+            d = dist_diffusion ( h1 , h2 );
+            sim = max(0,1 - d);
+        case 'L1,avg'
+            for i = 1:size(h1,1)
+                d(i) = dist_l1 ( h1(i,:) , h2(i,:) );
+            end
+            sim = 1 - mean(d)/2;
+        case 'L2,avg'
+            for i = 1:size(h1,1)
+                d(i) = dist_l2 ( h1(i,:) , h2(i,:) );
+            end
+            sim = 1 - mean(d)/2;
+        case 'correlation,avg'
+            for i = 1:size(h1,1)
+                s(i) = dist_correlation ( h1(i,:) , h2(i,:) );
+            end
+            sim = mean(s);
+        case 'chi-square,avg'
+            for i = 1:size(h1,1)
+                d(i) = dist_chisquare ( h1(i,:) , h2(i,:) );
+                d(i) = clip_range(d(i), [0 1]);
+            end
+            sim = 1 - mean(d);
+        case 'intersection,avg'
+            for i = 1:size(h1,1)
+                s(i) = dist_intersection ( h1(i,:) , h2(i,:) );
+            end
+            sim = mean(s);
+        case 'bhattacharyya,avg'
+            for i = 1:size(h1,1)
+                d(i) = dist_bhattacharyya ( h1(i,:) , h2(i,:) );
+            end
+            sim = 1 - mean(d);
+        case 'kl-divergance,avg'
+            for i = 1:size(h1,1)
+                d(i) = dist_kl ( h1(i,:) , h2(i,:) );
+                d(i) = min (1 , d(i));
+            end
+            sim = 1 - mean(d);
+        case 'diffusion,avg'
+            for i = 1:size(h1,1)
+                d(i) = dist_diffusion ( h1(i,:) , h2(i,:) );
+                d(i) = clip_range(d(i), [0 1]);
+            end
+            sim = 1 - mean(d);
+        case 'L1,wei'
+            for i = 1:size(h1,1)
+                d(i) = dist_l1 ( cof1(i)*h1(i,:) , cof2(i)*h2(i,:) );
+            end
+            sim = 1 - d/2;
+        case 'L2,wei'
+            for i = 1:size(h1,1)
+                d(i) = dist_l2 ( h1(i,:) , h2(i,:) );
+            end
+            sim = 1 - mean(d)/2;
+        case 'correlation,wei'
+            for i = 1:size(h1,1)
+                s(i) = dist_correlation ( h1(i,:) , h2(i,:) );
+            end
+            sim = mean(s);
+        case 'chi-square,wei'
+            for i = 1:size(h1,1)
+                d(i) = dist_chisquare ( h1(i,:) , h2(i,:) );
+                d(i) = clip_range(d(i), [0 1]);
+            end
+            sim = 1 - mean(d);
+        case 'intersection,wei'
+            for i = 1:size(h1,1)
+                s(i) = dist_intersection ( h1(i,:) , h2(i,:) );
+            end
+            sim = mean(s);
+        case 'bhattacharyya,wei'
+            for i = 1:size(h1,1)
+                d(i) = dist_bhattacharyya ( h1(i,:) , h2(i,:) );
+            end
+            sim = 1 - mean(d);
+        case 'kl-divergance,wei'
+            for i = 1:size(h1,1)
+                d(i) = dist_kl ( h1(i,:) , h2(i,:) );
+                d(i) = min (1 , d(i));
+            end
+            sim = 1 - mean(d);
+        case 'diffusion,wei'
+            for i = 1:size(h1,1)
+                d(i) = dist_diffusion ( h1(i,:) , h2(i,:) );
+                d(i) = clip_range(d(i), [0 1]);
+            end
+            sim = 1 - mean(d);
     end
 
 end

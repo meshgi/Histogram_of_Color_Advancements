@@ -4,12 +4,16 @@
 % hoc_name = 'clustering';  hoc_param = 40;
 
 % gridding = '';
-% gridding = 'g2,avg';
-% gridding = 'g3,avg';
-% gridding = 'g5,avg';
-% gridding = 'g2,wei';
-% gridding = 'g3,wei';
-% gridding = 'g5,wei';
+% gridding = ',g2,avg';
+% gridding = ',g3,avg';
+% gridding = ',g5,avg';
+% gridding = ',g2,wei';
+% gridding = ',g3,wei';
+% gridding = ',g5,wei';
+% gridding = ',g2';
+% gridding = ',g3';
+% gridding = ',g5';
+
 
 % hoc_update = '';
 % hoc_update = 'moving average';

@@ -1,11 +1,11 @@
 function ctrs = hoc_init ( method , init_frame , hoc_param)
     switch (method)
-        case {'conventional','conventional,g2,avg','conventional,g3,avg','conventional,g5,avg','conventional,g2,wei','conventional,g3,wei','conventional,g5,wei'}
+        case {'conventional','conventional,g2,avg','conventional,g3,avg','conventional,g5,avg','conventional,g2,wei','conventional,g3,wei','conventional,g5,wei','conventional,g2','conventional,g3','conventional,g5'}
             m = hoc_param(1);  % single color channel quantization
             q = linspace(1,255,m);
             ctrs = setprod (q,q,q);
 
-        case {'clustering','clustering,g2,avg','clustering,g3,avg','clustering,g5,avg','clustering,g2,wei','clustering,g3,wei','clustering,g5,wei'}
+        case {'clustering','clustering,g2,avg','clustering,g3,avg','clustering,g5,avg','clustering,g2,wei','clustering,g3,wei','clustering,g5,wei','clustering,g2','clustering,g3','clustering,g5'}
             img = init_frame;
             % get all points of image, sample them choosing points in equivalent
             % distance

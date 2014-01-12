@@ -10,7 +10,7 @@ clc
 clear
 close all
 
-option_verbose = true;
+option_verbose = false;
 
 obj_cnt = 3;
 % hoc_name = 'conventional';  hoc_param = 5;
@@ -24,10 +24,10 @@ obj_cnt = 3;
 % hoc_name = 'conventional,g2,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g2,wei';  hoc_param = 40;
 % hoc_name = 'conventional,g3,wei';  hoc_param = 5;
-hoc_name = 'clustering,g3,wei';  hoc_param = 40;
+% hoc_name = 'clustering,g3,wei';  hoc_param = 40;
 % hoc_name = 'conventional,g5,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g5,wei';  hoc_param = 40;
-% hoc_name = 'conventional,g2';  hoc_param = 5;
+hoc_name = 'conventional,g2';  hoc_param = 5;
 % hoc_name = 'clustering,g2';  hoc_param = 40;
 % hoc_name = 'conventional,g3';  hoc_param = 5;
 % hoc_name = 'clustering,g3';  hoc_param = 40;
@@ -38,11 +38,12 @@ hoc_update = 'moving average';
 
 % hoc_dist_name = 'L1';
 % hoc_dist_name = 'L2';
-hoc_dist_name = 'correlation';
+% hoc_dist_name = 'correlation';
 % hoc_dist_name = 'chi-square';
 % hoc_dist_name = 'intersection';
 % hoc_dist_name = 'bhattacharyya';
 % hoc_dist_name = 'kl-divergance';
+% hoc_dist_name = 'diffusion';
 
 
 % hoc_dist_name = 'L1,avg';
@@ -52,14 +53,16 @@ hoc_dist_name = 'correlation';
 % hoc_dist_name = 'intersection,avg';
 % hoc_dist_name = 'bhattacharyya,avg';
 % hoc_dist_name = 'kl-divergance,avg';
+% hoc_dist_name = 'diffusion,avg';
 
-% hoc_dist_name = 'L1,wei';
+hoc_dist_name = 'L1,wei';
 % hoc_dist_name = 'L2,wei';
 % hoc_dist_name = 'correlation,wei';
 % hoc_dist_name = 'chi-square,wei';
 % hoc_dist_name = 'intersection,wei';
 % hoc_dist_name = 'bhattacharyya,wei';
 % hoc_dist_name = 'kl-divergance,wei';
+% hoc_dist_name = 'diffusion,wei';
 
 % read all file names
 disp('Loading Data...');
@@ -98,6 +101,9 @@ for o = 1:obj_cnt
         hoc1 = frame_obj{i,o}.hoc; % this frame
         hoc2 = frame_obj{i-1,o}.hoc; % last frame
         
+        cof1 = frame_obj{i,o}.rat; % this frame
+        cof2 = frame_obj{i-1,o}.rat; % last frame
+        
         % visualization of hoc differences
         if (option_verbose)
             clf;
@@ -108,7 +114,7 @@ for o = 1:obj_cnt
             subplot (3,3,[7,8]);  bar (abs(hoc1-hoc2)); xlim([0 length(hoc1)]); ylim([0 0.2]); drawnow;
         end
 
-        intra_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2);
+        intra_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1 , cof2);
     end
 %     plot (1:n-1 , intra_sim(o,:),colors{1,o},'LineWidth',2);
 %     hold on
@@ -133,7 +139,10 @@ for o1 = 1:obj_cnt
         for i = 1:n    
             hoc1 = frame_obj{i,o1}.hoc; % obj 1
             hoc2 = frame_obj{i,o2}.hoc; % obj 2
-            inter_sim (o1,o2,i) = hoc_similarity ( hoc_dist_name, hoc1, hoc2);
+            cof1 = frame_obj{i,o1}.rat; % obj 1
+            cof2 = frame_obj{i,o2}.rat; % obj 2
+            
+            inter_sim (o1,o2,i) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2);
             inter_sim (o2,o1,i) = inter_sim (o1,o2,i);
         end
     end
@@ -156,9 +165,12 @@ figure ('Name','Template Matching');
 template_sim = zeros(1,n-1);
 for o = 1:obj_cnt 
     hoc2 = frame_obj{1,o}.hoc; % template
+    cof2 = frame_obj{1,o}.rat; % template
+    
     disp(['Obj' num2str(o) ' Template Similarity Calculation.'] );
     for i = 2:n
         hoc1 = frame_obj{i,o}.hoc; % this frame
+        rat1 = frame_obj{i,o}.rat; % this frame
         
         % visualization of hoc differences
         if (option_verbose)
@@ -171,7 +183,7 @@ for o = 1:obj_cnt
             drawnow;
         end
 
-        template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2);
+        template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2);
     end
 %     plot (1:n-1 , template_sim(o,:),colors{1,o},'LineWidth',2);
 %     hold on
@@ -191,8 +203,10 @@ utemplate_sim = zeros(1,n-1);
 for o = 1:obj_cnt 
     disp(['Obj' num2str(o) ' Updated Template Similarity Calculation.'] );
     hoc2 = frame_obj{1,o}.hoc; % template
+    cof2 = frame_obj{1,o}.rat; % template
     for i = 2:n
         hoc1 = frame_obj{i,o}.hoc; % this frame
+        cof1 = frame_obj{i,o}.rat;
         hoc2 = template_update ( hoc_update , hoc2 , hoc1 , i );
         % visualization of hoc differences
         if (option_verbose)
@@ -203,7 +217,7 @@ for o = 1:obj_cnt
             drawnow;
         end
 
-        utemplate_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2);
+        utemplate_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2);
     end
 %     plot (1:n-1 , intra_sim(o,:),colors{1,o},'LineWidth',2);
 %     hold on
@@ -244,7 +258,7 @@ disp(['Total (mean/var) Template      ' mat2str(s7)]);
 disp(['Total (mean/var) Template(U)   ' mat2str(s8)]);
 
 s9 = sqrt(s5(1) * (100-s6(1)));
-disp(['Score of This Combination (intra*(1-inter)):   '  num2str(s9)]);
+disp(['Score of This Combination ?(intra*(1-inter)):   '  num2str(s9)]);
 
 
 
