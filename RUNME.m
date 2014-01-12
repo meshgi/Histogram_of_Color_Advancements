@@ -55,14 +55,14 @@ hoc_update = 'moving average';
 % hoc_dist_name = 'kl-divergance,avg';
 % hoc_dist_name = 'diffusion,avg';
 
-hoc_dist_name = 'L1,wei';
+% hoc_dist_name = 'L1,wei';
 % hoc_dist_name = 'L2,wei';
 % hoc_dist_name = 'correlation,wei';
 % hoc_dist_name = 'chi-square,wei';
 % hoc_dist_name = 'intersection,wei';
 % hoc_dist_name = 'bhattacharyya,wei';
 % hoc_dist_name = 'kl-divergance,wei';
-% hoc_dist_name = 'diffusion,wei';
+hoc_dist_name = 'diffusion,wei';
 
 % read all file names
 disp('Loading Data...');
