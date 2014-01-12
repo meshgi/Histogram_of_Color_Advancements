@@ -21,16 +21,18 @@ function new_template = template_update ( method , old_template , new_entry , fr
             q_size = 5;
             if (frame_no == 2)
                 q_counter = 2;
-                q_hoc = [old_template; new_entry];
+                q_hoc(1,:,:) = old_template; 
+                q_hoc(2,:,:) = new_entry;
             else
                 if (q_counter < q_size)
-                    q_hoc = [q_hoc ; new_entry];
+                    q_hoc(q_counter + 1,:,:) = new_entry;
                     q_counter = q_counter + 1;
                 else
-                    q_hoc = [q_hoc(2:end,:) ; new_entry];
+                    q_hoc = q_hoc(2:end,:,:);
+                    q_hoc(q_counter,:,:) = new_entry;
                 end
             end
-            new_template = mean(q_hoc);
+            new_template = squeeze(mean(q_hoc,1));
                 
         case 'update with memory'
             alpha = 0.1; %short term memory forgetting rate
@@ -48,7 +50,6 @@ function new_template = template_update ( method , old_template , new_entry , fr
             new_template = 0.5*(q_hoc + (1-alpha)*old_template + alpha*new_entry);
             
         case 'average all'
-            % TO BE CHECKED
             n = frame_no;
             new_template = (1/n) *((n-1)*old_template + new_entry);
     end

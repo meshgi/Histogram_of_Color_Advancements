@@ -13,7 +13,7 @@ close all
 option_verbose = false;
 
 obj_cnt = 3;
-hoc_name = 'conventional';  hoc_param = 5;
+% hoc_name = 'conventional';  hoc_param = 5;
 % hoc_name = 'clustering';  hoc_param = 40;
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;
@@ -27,7 +27,7 @@ hoc_name = 'conventional';  hoc_param = 5;
 % hoc_name = 'clustering,g3,wei';  hoc_param = 40;
 % hoc_name = 'conventional,g5,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g5,wei';  hoc_param = 40;
-% hoc_name = 'conventional,g2';  hoc_param = 5;
+hoc_name = 'conventional,g2';  hoc_param = 5;
 % hoc_name = 'clustering,g2';  hoc_param = 40;
 % hoc_name = 'conventional,g3';  hoc_param = 5;
 % hoc_name = 'clustering,g3';  hoc_param = 40;
@@ -35,9 +35,10 @@ hoc_name = 'conventional';  hoc_param = 5;
 % hoc_name = 'clustering,g5';  hoc_param = 40;
 
 % hoc_update = 'moving average';
-% hoc_update = 'last 5';
+% hoc_update = 'nerd';
+hoc_update = 'last 5';
 % hoc_update = 'average all';
-hoc_update = 'update with memory';
+% hoc_update = 'update with memory';
 
 
 % hoc_dist_name = 'L1';
@@ -45,7 +46,7 @@ hoc_update = 'update with memory';
 % hoc_dist_name = 'correlation';
 % hoc_dist_name = 'chi-square';
 % hoc_dist_name = 'intersection';
-hoc_dist_name = 'bhattacharyya';
+% hoc_dist_name = 'bhattacharyya';
 % hoc_dist_name = 'kl-divergance';
 % hoc_dist_name = 'diffusion';
 
@@ -53,7 +54,7 @@ hoc_dist_name = 'bhattacharyya';
 % hoc_dist_name = 'L1,avg';
 % hoc_dist_name = 'L2,avg';
 % hoc_dist_name = 'correlation,avg';
-% hoc_dist_name = 'chi-square,avg';
+hoc_dist_name = 'chi-square,avg';
 % hoc_dist_name = 'intersection,avg';
 % hoc_dist_name = 'bhattacharyya,avg';
 % hoc_dist_name = 'kl-divergance,avg';
