@@ -27,13 +27,14 @@ obj_cnt = 3;
 % hoc_name = 'clustering,g3,wei';  hoc_param = 40;
 % hoc_name = 'conventional,g5,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g5,wei';  hoc_param = 40;
-hoc_name = 'conventional,g2';  hoc_param = 5;
-% hoc_name = 'clustering,g2';  hoc_param = 40;
+% hoc_name = 'conventional,g2';  hoc_param = 5;
+hoc_name = 'clustering,g2';  hoc_param = 40;
 % hoc_name = 'conventional,g3';  hoc_param = 5;
 % hoc_name = 'clustering,g3';  hoc_param = 40;
 % hoc_name = 'conventional,g5';  hoc_param = 5;
 % hoc_name = 'clustering,g5';  hoc_param = 40;
 
+% hoc_update = 'none';
 % hoc_update = 'moving average';
 % hoc_update = 'nerd';
 hoc_update = 'last 5';
@@ -266,10 +267,4 @@ s9 = sqrt(s5(1) * (100-s6(1)));
 disp(['Score of This Combination ?(intra*(1-inter)):   '  num2str(s9)]);
 
 
-
-
-%% Ideas
-
-% ADD Confidence Weighted Grid -> to make a single HOC, OR to combine
-% distances
 
