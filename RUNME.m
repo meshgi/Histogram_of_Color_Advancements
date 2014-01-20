@@ -13,7 +13,7 @@ close all
 option_verbose = false;
 
 obj_cnt = 3;
-% hoc_name = 'conventional';  hoc_param = 5;
+hoc_name = 'conventional';  hoc_param = 5;
 % hoc_name = 'clustering';  hoc_param = 40;
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;
@@ -28,16 +28,16 @@ obj_cnt = 3;
 % hoc_name = 'conventional,g5,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g5,wei';  hoc_param = 40;
 % hoc_name = 'conventional,g2';  hoc_param = 5;
-hoc_name = 'clustering,g2';  hoc_param = 40;
+% hoc_name = 'clustering,g2';  hoc_param = 40;
 % hoc_name = 'conventional,g3';  hoc_param = 5;
 % hoc_name = 'clustering,g3';  hoc_param = 40;
 % hoc_name = 'conventional,g5';  hoc_param = 5;
 % hoc_name = 'clustering,g5';  hoc_param = 40;
 
 % hoc_update = 'none';
-% hoc_update = 'moving average';
+hoc_update = 'moving average';
 % hoc_update = 'nerd';
-hoc_update = 'last 5';
+% hoc_update = 'last 5';
 % hoc_update = 'average all';
 % hoc_update = 'update with memory';
 
@@ -50,12 +50,18 @@ hoc_update = 'last 5';
 % hoc_dist_name = 'bhattacharyya';
 % hoc_dist_name = 'kl-divergance';
 % hoc_dist_name = 'diffusion';
+% hoc_dist_name = 'match';
+% hoc_dist_name = 'jeffry div';
+hoc_dist_name = 'kolmogorov smirnov';
+
+
+
 
 
 % hoc_dist_name = 'L1,avg';
 % hoc_dist_name = 'L2,avg';
 % hoc_dist_name = 'correlation,avg';
-hoc_dist_name = 'chi-square,avg';
+% hoc_dist_name = 'chi-square,avg';
 % hoc_dist_name = 'intersection,avg';
 % hoc_dist_name = 'bhattacharyya,avg';
 % hoc_dist_name = 'kl-divergance,avg';
@@ -264,7 +270,7 @@ disp(['Total (mean/var) Template      ' mat2str(s7)]);
 disp(['Total (mean/var) Template(U)   ' mat2str(s8)]);
 
 s9 = sqrt(s5(1) * (100-s6(1)));
-disp(['Score of This Combination ?(intra*(1-inter)):   '  num2str(s9)]);
+disp(['Score of This Combination sqrt(intra*(1-inter)):   '  num2str(s9)]);
 
 
 

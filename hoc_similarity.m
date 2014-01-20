@@ -32,6 +32,15 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 )
         case 'diffusion'
             d = dist_diffusion ( h1 , h2 );
             sim = max(0,1 - d);
+        case 'match'
+            d = dist_match ( h1, h2 );
+            sim = 1 - d;
+        case 'jeffry div'
+            d = dist_jeffrey ( h1 , h2 );
+            sim = 1 - d;
+        case 'kolmogorov smirnov'
+            d = dist_ks ( h1 , h2 );
+            sim = 1 - d;
         case 'L1,avg'
             for i = 1:size(h1,1)
                 d(i) = dist_l1 ( h1(i,:) , h2(i,:) );
