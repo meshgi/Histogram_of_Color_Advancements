@@ -16,6 +16,9 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 )
         case 'L2'
             d = dist_l2 ( h1 , h2 );
             sim = 1 - d/2;
+        case 'Linf'
+            d = dist_linf ( h1 , h2 );
+            sim = 1 - d;
         case 'correlation'
             sim = dist_correlation ( h1, h2 );
         case 'chi-square'
@@ -41,6 +44,10 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 )
         case 'kolmogorov smirnov'
             d = dist_ks ( h1 , h2 );
             sim = 1 - d;
+        case 'cramer von mises'
+            d = dist_cvm ( h1 , h2 );
+            sim = 1 - d/length(h1);
+            
         case 'L1,avg'
             for i = 1:size(h1,1)
                 d(i) = dist_l1 ( h1(i,:) , h2(i,:) );

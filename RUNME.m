@@ -44,6 +44,7 @@ hoc_update = 'moving average';
 
 % hoc_dist_name = 'L1';
 % hoc_dist_name = 'L2';
+hoc_dist_name = 'Linf';
 % hoc_dist_name = 'correlation';
 % hoc_dist_name = 'chi-square';
 % hoc_dist_name = 'intersection';
@@ -52,7 +53,9 @@ hoc_update = 'moving average';
 % hoc_dist_name = 'diffusion';
 % hoc_dist_name = 'match';
 % hoc_dist_name = 'jeffry div';
-hoc_dist_name = 'kolmogorov smirnov';
+% hoc_dist_name = 'kolmogorov smirnov';
+% hoc_dist_name = 'cramer von mises';
+
 
 
 
