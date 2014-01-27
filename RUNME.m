@@ -13,26 +13,33 @@ close all
 option_verbose = false;
 
 obj_cnt = 3;
+% =========================================================================
+
 hoc_name = 'conventional';  hoc_param = 5;
 % hoc_name = 'clustering';  hoc_param = 40;
+
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;
 % hoc_name = 'conventional,g3,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g3,avg';  hoc_param = 40;
 % hoc_name = 'conventional,g5,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g5,avg';  hoc_param = 40;
+
 % hoc_name = 'conventional,g2,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g2,wei';  hoc_param = 40;
 % hoc_name = 'conventional,g3,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g3,wei';  hoc_param = 40;
 % hoc_name = 'conventional,g5,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g5,wei';  hoc_param = 40;
+
 % hoc_name = 'conventional,g2';  hoc_param = 5;
 % hoc_name = 'clustering,g2';  hoc_param = 40;
 % hoc_name = 'conventional,g3';  hoc_param = 5;
 % hoc_name = 'clustering,g3';  hoc_param = 40;
 % hoc_name = 'conventional,g5';  hoc_param = 5;
 % hoc_name = 'clustering,g5';  hoc_param = 40;
+
+% =========================================================================
 
 % hoc_update = 'none';
 hoc_update = 'moving average';
@@ -41,10 +48,11 @@ hoc_update = 'moving average';
 % hoc_update = 'average all';
 % hoc_update = 'update with memory';
 
+% =========================================================================
 
 % hoc_dist_name = 'L1';
 % hoc_dist_name = 'L2';
-hoc_dist_name = 'Linf';
+% hoc_dist_name = 'Linf';
 % hoc_dist_name = 'correlation';
 % hoc_dist_name = 'chi-square';
 % hoc_dist_name = 'intersection';
@@ -55,29 +63,46 @@ hoc_dist_name = 'Linf';
 % hoc_dist_name = 'jeffry div';
 % hoc_dist_name = 'kolmogorov smirnov';
 % hoc_dist_name = 'cramer von mises';
-
-
-
-
+hoc_dist_name = 'quadratic';
+% hoc_dist_name = 'quadratic-chi';
+% hoc_dist_name = 'emd';
 
 
 % hoc_dist_name = 'L1,avg';
 % hoc_dist_name = 'L2,avg';
+% hoc_dist_name = 'Linf,avg';
 % hoc_dist_name = 'correlation,avg';
 % hoc_dist_name = 'chi-square,avg';
 % hoc_dist_name = 'intersection,avg';
 % hoc_dist_name = 'bhattacharyya,avg';
 % hoc_dist_name = 'kl-divergance,avg';
 % hoc_dist_name = 'diffusion,avg';
+% hoc_dist_name = 'match,avg';
+% hoc_dist_name = 'jeffry div,avg';
+% hoc_dist_name = 'kolmogorov smirnov,avg';
+% hoc_dist_name = 'cramer von mises,avg';
+% hoc_dist_name = 'quadratic,avg';
+% hoc_dist_name = 'quadratic-chi,avg';
+% hoc_dist_name = 'emd,avg';
 
 % hoc_dist_name = 'L1,wei';
 % hoc_dist_name = 'L2,wei';
+% hoc_dist_name = 'Linf,wei';
 % hoc_dist_name = 'correlation,wei';
 % hoc_dist_name = 'chi-square,wei';
 % hoc_dist_name = 'intersection,wei';
 % hoc_dist_name = 'bhattacharyya,wei';
 % hoc_dist_name = 'kl-divergance,wei';
 % hoc_dist_name = 'diffusion,wei';
+% hoc_dist_name = 'match,wei';
+% hoc_dist_name = 'jeffry div,wei';
+% hoc_dist_name = 'kolmogorov smirnov,wei';
+% hoc_dist_name = 'cramer von mises,wei';
+% hoc_dist_name = 'quadratic,wei';
+% hoc_dist_name = 'quadratic-chi,wei';
+% hoc_dist_name = 'emd,wei';
+
+% =========================================================================
 
 % read all file names
 disp('Loading Data...');
@@ -87,7 +112,7 @@ for i = 1:obj_cnt
 end
 n = length(obj_img_list{1,1});
 
-ctrs = hoc_init ( hoc_name , imread('data/scenario 1/frame_0455.jpg'), hoc_param);
+[ctrs,q] = hoc_init ( hoc_name , imread('data/scenario 1/frame_0455.jpg'), hoc_param);
 
 for o = 1:obj_cnt
     disp (['Calculating HOC for Obj ' num2str(o)]);
@@ -129,7 +154,7 @@ for o = 1:obj_cnt
             subplot (3,3,[7,8]);  bar (abs(hoc1-hoc2)); xlim([0 length(hoc1)]); ylim([0 0.2]); drawnow;
         end
 
-        intra_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1 , cof2);
+        intra_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1 , cof2 , q);
     end
 %     plot (1:n-1 , intra_sim(o,:),colors{1,o},'LineWidth',2);
 %     hold on
@@ -157,7 +182,7 @@ for o1 = 1:obj_cnt
             cof1 = frame_obj{i,o1}.rat; % obj 1
             cof2 = frame_obj{i,o2}.rat; % obj 2
             
-            inter_sim (o1,o2,i) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2);
+            inter_sim (o1,o2,i) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
             inter_sim (o2,o1,i) = inter_sim (o1,o2,i);
         end
     end
@@ -198,7 +223,7 @@ for o = 1:obj_cnt
             drawnow;
         end
 
-        template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2);
+        template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
     end
 %     plot (1:n-1 , template_sim(o,:),colors{1,o},'LineWidth',2);
 %     hold on
@@ -232,7 +257,7 @@ for o = 1:obj_cnt
             drawnow;
         end
 
-        utemplate_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2);
+        utemplate_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
     end
 %     plot (1:n-1 , intra_sim(o,:),colors{1,o},'LineWidth',2);
 %     hold on

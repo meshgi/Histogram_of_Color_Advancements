@@ -1,4 +1,4 @@
-function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 )
+function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 , q)
 
     if (length(h1) ~= length(h2))
         sim = -1;
@@ -46,7 +46,16 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 )
             sim = 1 - d;
         case 'cramer von mises'
             d = dist_cvm ( h1 , h2 );
-            sim = 1 - d/length(h1);
+            sim = 1 - d;
+        case 'quadratic'
+            d = dist_quadratic ( h1 , h2 , q );
+            sim = 1 - d;
+        case 'quadratic-chi'
+            d = dist_qc ( h1 , h2 , q );
+            sim = 1 - clip_range(d, [0 1]);
+            
+            
+            
             
         case 'L1,avg'
             for i = 1:size(h1,1)
@@ -58,6 +67,11 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 )
                 d(i) = dist_l2 ( h1(i,:) , h2(i,:) );
             end
             sim = 1 - mean(d)/2;
+        case 'Linf,avg'
+            for i = 1:size(h1,1)
+                s(i) = dist_linf ( h1(i,:) , h2(i,:) );
+            end
+            sim = 1 - mean(s);
         case 'correlation,avg'
             for i = 1:size(h1,1)
                 s(i) = dist_correlation ( h1(i,:) , h2(i,:) );
@@ -91,6 +105,41 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 )
                 d(i) = clip_range(d(i), [0 1]);
             end
             sim = 1 - mean(d);
+        case 'match,avg'
+            for i = 1:size(h1,1)
+                s(i) = dist_match ( h1(i,:) , h2(i,:) );
+            end
+            sim = 1 - mean(s);
+        case 'kolmogorov smirnov,avg'
+            for i = 1:size(h1,1)
+                s(i) = dist_ks ( h1(i,:) , h2(i,:) );
+            end
+            sim = 1 - mean(s);
+        case 'jeffry div,avg'
+            for i = 1:size(h1,1)
+                s(i) = dist_jeffrey ( h1(i,:) , h2(i,:) );
+            end
+            sim = 1 - mean(s);
+        case 'cramer von mises,avg'
+            for i = 1:size(h1,1)
+                s(i) = dist_cvm ( h1(i,:) , h2(i,:) );
+            end
+            sim = 1 - mean(s);
+        case 'quadratic,avg'
+            for i = 1:size(h1,1)
+                s(i) = dist_quadratic ( h1(i,:) , h2(i,:) , q );
+            end
+            sim = 1 - mean(s);
+        case 'quadratic-chi,avg'
+            for i = 1:size(h1,1)
+                d(i) = dist_qc ( h1(i,:) , h2(i,:) , q );
+                d(i) = clip_range(d(i), [0 1]);
+            end
+            sim = 1 - mean(d);
+            
+            
+            
+            
         case 'L1,wei'
             cof_prob = cof1'*cof2;
             for i = 1:size(h1,1)
@@ -105,6 +154,13 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 )
             end
             
             sim = 1 - sum(d)/2;
+        case 'Linf,wei'
+            cof_prob = cof1'*cof2;
+            for i = 1:size(h1,1)
+                d(i) = (cof1(i)*cof2(i)/cof_prob)*dist_linf ( h1(i,:) , h2(i,:) );
+            end
+            
+            sim = 1 - sum(d);
         case 'correlation,wei'
             cof_prob = cof1'*cof2;
             for i = 1:size(h1,1)
@@ -146,6 +202,48 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 )
             for i = 1:size(h1,1)
                 d(i) = dist_diffusion ( h1(i,:) , h2(i,:) );
                 d(i) = (cof1(i)*cof2(i)/cof_prob)*clip_range(d(i), [0 1]);
+            end
+            sim = 1 - sum(d);
+        case 'match,wei'
+            cof_prob = cof1'*cof2;
+            for i = 1:size(h1,1)
+                d(i) = (cof1(i)*cof2(i)/cof_prob)*dist_match ( h1(i,:) , h2(i,:) );
+            end
+            
+            sim = 1 - sum(d);
+        case 'kolmogorov smirnov,wei'
+            cof_prob = cof1'*cof2;
+            for i = 1:size(h1,1)
+                d(i) = (cof1(i)*cof2(i)/cof_prob)*dist_ks ( h1(i,:) , h2(i,:) );
+            end
+            
+            sim = 1 - sum(d);
+        case 'jeffry div,wei'
+            cof_prob = cof1'*cof2;
+            for i = 1:size(h1,1)
+                d(i) = (cof1(i)*cof2(i)/cof_prob)*dist_jeffrey ( h1(i,:) , h2(i,:) );
+            end
+            
+            sim = 1 - sum(d);
+        case 'cramer von mises,wei'
+            cof_prob = cof1'*cof2;
+            for i = 1:size(h1,1)
+                d(i) = (cof1(i)*cof2(i)/cof_prob)*dist_cvm ( h1(i,:) , h2(i,:) );
+            end
+            
+            sim = 1 - sum(d);
+        case 'quadratic,wei'
+            cof_prob = cof1'*cof2;
+            for i = 1:size(h1,1)
+                d(i) = (cof1(i)*cof2(i)/cof_prob)*dist_quadratic ( h1(i,:) , h2(i,:) , q);
+            end
+            
+            sim = 1 - sum(d);
+        case 'quadratic-chi,wei'
+            cof_prob = cof1'*cof2;
+            for i = 1:size(h1,1)
+                d(i) = dist_qc ( h1(i,:) , h2(i,:) , q );
+                d(i) = clip_range(d(i), [0 1]) * (cof1(i)*cof2(i)/cof_prob);
             end
             sim = 1 - sum(d);
     end

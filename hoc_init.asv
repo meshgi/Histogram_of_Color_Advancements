@@ -20,32 +20,60 @@ function [ctrs, Q] = hoc_init ( method , init_frame , hoc_param)
     end
     
     n = size(ctrs,1);
-    for i = 1:n
-        for j = 1:n
-            rgb_bins(j,i,:) = uint8(floor(ctrs(i,:)));
-        end
-    end
-    % imshow(rgb_bins);
-
-    cform = makecform('srgb2lab');
-    lab_bins = applycform(rgb_bins,cform);
-    % imshow(lab_bins);
-
-    ctrs_lab = double(squeeze(lab_bins(1,:,:)));
-    d = zeros(n);
-    for i = 1:n
-        for j = i+1:n
-            d(i,j) = deltaE2000 (ctrs_lab(i,:) , ctrs_lab(j,:));
-            d(j,i) = d(i,j);
-        end
-    end
-    dmax = max(d(:));
+%     dE00 = zeros(n);
+%     
+%     for i = 1:n
+%         for j = 1:n
+%             rgb_bins(j,i,:) = floor(ctrs(i,:));
+%         end
+%     end
+%     cform = makecform('srgb2lab');
+%     lab_bins = applycform(rgb_bins,cform);
+%     
+%     subplot(1,2,1); image(rgb_bins);
+%     subplot(1,2,2); image(lab_bins);
+%         
+%     for i = 1:n
+%         i
+%         for j = i+1:n
+%             c1 = squeeze(lab_bins(1,i,:));
+%             c2 = squeeze(lab_bins(1,j,:));
+%             
+%             dE00(i,j) = deltaE2000 ( c1 , c2 );
+%             dE00(j,i) = dE00(i,j);
+%         end
+%     end
+%     max_d = max(dE00(:));
+%     Q = exp(1 - dE00/max_d);
     
-    
-    sigma = 2;
-%     Q = eye (n);                        % no cross bin consideration
-%     Q = ones(n) - d/dmax;               % linear
-%     Q = exp( - sigma * d/dmax);         % exponential
-    Q = exp( - sigma * (d/dmax).^2);    % more exponential
+Q = eye (n);    
+            
 
+
+for i = 1:n
+    for j = 1:n
+        rgb_bins(j,i,:) = uint8(floor(ctrs(i,:)));
+    end
+end
+% imshow(rgb_bins);
+
+cform = makecform('srgb2lab');
+lab_bins = applycform(rgb_bins,cform);
+% imshow(lab_bins);
+
+ctrs_lab = double(squeeze(lab_bins(1,:,:)));
+d = zeros(n);
+for i = 1:n
+    for j = i+1:n
+        d(i,j) = deltaE2000 (ctrs_lab(i,:) , ctrs_lab(j,:));
+        d(j,i) = d(i,j);
+    end
+end
+dmax = max(d(:));
+Q = ones(n) - q1/dmax;
+
+% sigma = 0.5;
+% Q = exp( - sigma * q/dmax);
+% Q = exp( - sigma * (q/dmax).^2);
+    
 
