@@ -15,7 +15,7 @@ option_verbose = false;
 obj_cnt = 3;
 % =========================================================================
 
-hoc_name = 'conventional';  hoc_param = 5;
+% hoc_name = 'conventional';  hoc_param = 5;
 % hoc_name = 'clustering';  hoc_param = 40;
 
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
@@ -32,7 +32,7 @@ hoc_name = 'conventional';  hoc_param = 5;
 % hoc_name = 'conventional,g5,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g5,wei';  hoc_param = 40;
 
-% hoc_name = 'conventional,g2';  hoc_param = 5;
+hoc_name = 'conventional,g2';  hoc_param = 5;
 % hoc_name = 'clustering,g2';  hoc_param = 40;
 % hoc_name = 'conventional,g3';  hoc_param = 5;
 % hoc_name = 'clustering,g3';  hoc_param = 40;
@@ -63,9 +63,9 @@ hoc_update = 'moving average';
 % hoc_dist_name = 'jeffry div';
 % hoc_dist_name = 'kolmogorov smirnov';
 % hoc_dist_name = 'cramer von mises';
-hoc_dist_name = 'quadratic';
+% hoc_dist_name = 'quadratic';
 % hoc_dist_name = 'quadratic-chi';
-% hoc_dist_name = 'emd';
+% hoc_dist_name = 'emd hat';
 
 
 % hoc_dist_name = 'L1,avg';
@@ -83,7 +83,7 @@ hoc_dist_name = 'quadratic';
 % hoc_dist_name = 'cramer von mises,avg';
 % hoc_dist_name = 'quadratic,avg';
 % hoc_dist_name = 'quadratic-chi,avg';
-% hoc_dist_name = 'emd,avg';
+% hoc_dist_name = 'emd hat,avg';
 
 % hoc_dist_name = 'L1,wei';
 % hoc_dist_name = 'L2,wei';
@@ -100,7 +100,7 @@ hoc_dist_name = 'quadratic';
 % hoc_dist_name = 'cramer von mises,wei';
 % hoc_dist_name = 'quadratic,wei';
 % hoc_dist_name = 'quadratic-chi,wei';
-% hoc_dist_name = 'emd,wei';
+hoc_dist_name = 'emd hat,wei';
 
 % =========================================================================
 

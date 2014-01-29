@@ -53,7 +53,9 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 , q)
         case 'quadratic-chi'
             d = dist_qc ( h1 , h2 , q );
             sim = 1 - clip_range(d, [0 1]);
-            
+        case 'emd hat'
+            d = dist_emd_hat ( h1 , h2 , q );
+            sim = 1 - d;
             
             
             
@@ -136,6 +138,11 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 , q)
                 d(i) = clip_range(d(i), [0 1]);
             end
             sim = 1 - mean(d);
+        case 'emd hat,avg'
+            for i = 1:size(h1,1)
+                s(i) = dist_emd_hat ( h1(i,:) , h2(i,:) , q );
+            end
+            sim = 1 - mean(s);
             
             
             
@@ -245,6 +252,13 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 , q)
                 d(i) = dist_qc ( h1(i,:) , h2(i,:) , q );
                 d(i) = clip_range(d(i), [0 1]) * (cof1(i)*cof2(i)/cof_prob);
             end
+            sim = 1 - sum(d);
+        case 'emd hat,wei'
+            cof_prob = cof1'*cof2;
+            for i = 1:size(h1,1)
+                d(i) = (cof1(i)*cof2(i)/cof_prob)*dist_emd_hat ( h1(i,:) , h2(i,:) , q);
+            end
+            
             sim = 1 - sum(d);
     end
 
