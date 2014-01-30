@@ -10,8 +10,7 @@ for i = 1:obj_cnt
 end
 n = length(obj_img_list{1,1});
 
-% ctrs = hoc_init ( hoc_name , imread('data/scenario 1/frame_0455.jpg'), hoc_param);
-load ('ctrs.mat');
+[ctrs,q] = hoc_init ( hoc_name , imread('data/scenario 1/frame_0455.jpg'), hoc_param);
 
 for o = 1:obj_cnt
     for i = 1:n
@@ -40,7 +39,7 @@ for o = 1:obj_cnt
         cof1 = frame_obj{i,o}.rat; % this frame
         cof2 = frame_obj{i-1,o}.rat; % last frame
         
-        intra_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1 , cof2);
+        intra_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1 , cof2 , q);
     end
 end
 
@@ -56,7 +55,7 @@ for o1 = 1:obj_cnt
             cof1 = frame_obj{i,o1}.rat; % obj 1
             cof2 = frame_obj{i,o2}.rat; % obj 2
             
-            inter_sim (o1,o2,i) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2);
+            inter_sim (o1,o2,i) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
             inter_sim (o2,o1,i) = inter_sim (o1,o2,i);
         end
     end
@@ -77,7 +76,7 @@ for o = 1:obj_cnt
         hoc1 = frame_obj{i,o}.hoc; % this frame
         rat1 = frame_obj{i,o}.rat; % this frame
         
-        template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2);
+        template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
     end
 end
 
@@ -92,14 +91,14 @@ for o = 1:obj_cnt
         cof1 = frame_obj{i,o}.rat;
         hoc2 = template_update ( hoc_update , hoc2 , hoc1 , i );
     
-        utemplate_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2);
+        utemplate_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
     end
 end
 
 %% Results
 s1 = (sum(intra_sim')/n) * 100;
 s2 = [sum(inter_sim(1,2,:)) sum(inter_sim(1,3,:)) sum(inter_sim(2,3,:))]/(n-1)*100;
-s3 = sum(template_sim')/n*100;
+s3 = sum(utemplate_sim')/n*100;
 
 %% Total Results
 s(1) = mean(intra_sim(:)) * 100; 
