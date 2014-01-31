@@ -1,4 +1,11 @@
 function new_template = template_update ( method , old_template , new_entry , frame_no)
+    
+    if (strcmp(method,'clear'))
+        clear q_counter;
+        clear q_hoc;
+        clear mem;
+        return;
+    end
 
     % first template
     if (isempty(old_template))
@@ -6,9 +13,9 @@ function new_template = template_update ( method , old_template , new_entry , fr
         return;
     end
     
-    
     persistent q_counter;
     persistent q_hoc;
+    persistent mem;
     
     switch (method)
         case 'none'
@@ -33,21 +40,22 @@ function new_template = template_update ( method , old_template , new_entry , fr
                 end
             end
             new_template = squeeze(mean(q_hoc,1));
+            new_template = new_template';
                 
         case 'update with memory'
             alpha = 0.1; %short term memory forgetting rate
             beta = 0.4; %long term memory forgetting rate
             long_interval = 10;
                         
-            if ( isempty(q_hoc) )
-                q_hoc = old_template;
+            if ( isempty(mem) )
+                mem = old_template;
             end
             
             if ( mod(frame_no,long_interval) == 0 )
-                q_hoc = (1-beta)*q_hoc + beta*new_entry;
+                mem = (1-beta)*mem + beta*new_entry;
             end
             
-            new_template = 0.5*(q_hoc + (1-alpha)*old_template + alpha*new_entry);
+            new_template = 0.5*(mem + (1-alpha)*old_template + alpha*new_entry);
             
         case 'average all'
             n = frame_no;

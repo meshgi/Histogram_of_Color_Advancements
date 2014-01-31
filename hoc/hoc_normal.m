@@ -4,11 +4,11 @@ img_reshaped = reshape( img, size(img,1)*size(img,2), size(img,3) );
 % img_valid = img_reshaped(find(msk==1),:);
 img_valid = img_reshaped; % no bkg mask
 
-num_pixels = size( img_valid, 1 );                                                % fg pixel count
+num_pixels = size( img_valid, 1 );                                           % fg pixel count
 num_bins = size(ctrs,1);                                                     % bin count
 freq = zeros( num_bins, 1 );                                                 % bin counter initialization
 
-d = zeros( num_bins, num_pixels);                                             % distance matrix
+d = zeros( num_bins, num_pixels);                                            % distance matrix
 for c = 1:size(img,3)
     col_cnt = repmat(ctrs(:,c),1,num_pixels);
     col_img = repmat(img_valid(:,c)',num_bins,1);
@@ -16,7 +16,7 @@ for c = 1:size(img,3)
 end
 
 [~, idx] = min(d);                                                          % label of each pixel (=coresponding bin)
-freq = hist( idx, 1:num_bins );                                              % counting members of each bin
+freq = hist( idx, 1:num_bins );                                             % counting members of each bin
 freq = freq / num_pixels;
 
 % bar(freq); xlim([0 length(q)^3]);

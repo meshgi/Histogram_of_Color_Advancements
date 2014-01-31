@@ -12,8 +12,8 @@ close all
 % 5- gridding HOC + gridding DIST (avg/wei) + complex MU
 
 
-headers = {'HOC Bins' , 'Number of Bins', 'Gridding', 'Similarity Measure', 'Model Update', 'Intra Similarity', 'Inter Similarity' , 'Template Similarity' , 'Score'};
-delimit = {'========' , '==============', '========', '==================', '============', '================', '================' , '===================' , '====='};
+headers = {'HOC Bins' , 'Number of Bins', 'Gridding', 'Similarity Measure',  'Intra Similarity', 'Inter Similarity' , 'Template Sim(no upd)' , 'Template Sim(moving)' , 'Template Sim(last 5)' , 'Template Sim(avg all)' , 'Template Sim(memory)' , 'Score'};
+delimit = {'========' , '==============', '========', '==================',  '================', '================' , '====================' , '====================' , '====================' , '=====================' , '====================' , '====='};
 
 [~, ~, t] = xlsread('in.xlsx');
 for i = 1:size(t,1)
@@ -21,16 +21,21 @@ for i = 1:size(t,1)
     gridding = t{i,3};
     if (isnan(gridding)),        gridding = '';    end;
     
-    r = scenario1(t{i,1},gridding,t{i,6},t{i,4},t{i,5});
+    r = scenario1(t{i,1},gridding,t{i,5},t{i,4});
     
-    t{i,6}=sprintf('%0.2f',r(1));
-    t{i,7}=sprintf('%0.2f',r(2));
-    t{i,8}=sprintf('%0.2f',r(3));
-    t{i,9}=sprintf('%0.2f',r(4));
+    t{i,5}=sprintf('%0.2f',r(1));
+    t{i,6}=sprintf('%0.2f',r(2));
+    t{i,7}=sprintf('%0.2f',r(3));
+    t{i,8}=sprintf('%0.2f',r(4));
+    t{i,9}=sprintf('%0.2f',r(5));
+    t{i,10}=sprintf('%0.2f',r(6));
+    t{i,11}=sprintf('%0.2f',r(7));
+    t{i,12}=sprintf('%0.2f',r(8));
+    
     
 end
-    
+%     
 disp([headers;delimit;t])
-xlswrite('out.xlsx',[headers;t])
+xlswrite('automation/out.xlsx',[headers;t])
 close all
 

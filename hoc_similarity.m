@@ -56,6 +56,9 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 , q)
         case 'emd hat'
             d = dist_emd_hat ( h1 , h2 , q );
             sim = 1 - d;
+        case 'cosine'
+            d = dist_cosine ( h1 , h2 );
+            sim = 1 - d;
             
             
             
@@ -141,6 +144,12 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 , q)
         case 'emd hat,avg'
             for i = 1:size(h1,1)
                 s(i) = dist_emd_hat ( h1(i,:) , h2(i,:) , q );
+            end
+            sim = 1 - mean(s);
+            
+        case 'cosine,avg'
+            for i = 1:size(h1,1)
+                s(i) = dist_cosine ( h1(i,:) , h2(i,:) );
             end
             sim = 1 - mean(s);
             
@@ -257,6 +266,14 @@ function sim = hoc_similarity ( method, h1 , h2 , cof1 , cof2 , q)
             cof_prob = cof1'*cof2;
             for i = 1:size(h1,1)
                 d(i) = (cof1(i)*cof2(i)/cof_prob)*dist_emd_hat ( h1(i,:) , h2(i,:) , q);
+            end
+            
+            sim = 1 - sum(d);
+            
+        case 'cosine,wei'
+            cof_prob = cof1'*cof2;
+            for i = 1:size(h1,1)
+                d(i) = (cof1(i)*cof2(i)/cof_prob)*dist_cosine ( h1(i,:) , h2(i,:));
             end
             
             sim = 1 - sum(d);

@@ -19,7 +19,7 @@ obj_cnt = 3;
 % hoc_name = 'clustering';  hoc_param = 40;
 
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
-hoc_name = 'clustering,g2,avg';  hoc_param = 40;
+% hoc_name = 'clustering,g2,avg';  hoc_param = 40;
 % hoc_name = 'conventional,g3,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g3,avg';  hoc_param = 40;
 % hoc_name = 'conventional,g5,avg';  hoc_param = 5;
@@ -32,7 +32,7 @@ hoc_name = 'clustering,g2,avg';  hoc_param = 40;
 % hoc_name = 'conventional,g5,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g5,wei';  hoc_param = 40;
 
-% hoc_name = 'conventional,g2';  hoc_param = 5;
+hoc_name = 'conventional,g2';  hoc_param = 5;
 % hoc_name = 'clustering,g2';  hoc_param = 40;
 % hoc_name = 'conventional,g3';  hoc_param = 5;
 % hoc_name = 'clustering,g3';  hoc_param = 40;
@@ -65,7 +65,9 @@ hoc_update = 'moving average';
 % hoc_dist_name = 'cramer von mises';
 % hoc_dist_name = 'quadratic';
 % hoc_dist_name = 'quadratic-chi';
-hoc_dist_name = 'emd hat';
+% hoc_dist_name = 'emd hat';
+% hoc_dist_name = 'cosine';
+
 
 
 % hoc_dist_name = 'L1,avg';
@@ -84,6 +86,8 @@ hoc_dist_name = 'emd hat';
 % hoc_dist_name = 'quadratic,avg';
 % hoc_dist_name = 'quadratic-chi,avg';
 % hoc_dist_name = 'emd hat,avg';
+% hoc_dist_name = 'cosine,avg';
+
 
 % hoc_dist_name = 'L1,wei';
 % hoc_dist_name = 'L2,wei';
@@ -101,6 +105,7 @@ hoc_dist_name = 'emd hat';
 % hoc_dist_name = 'quadratic,wei';
 % hoc_dist_name = 'quadratic-chi,wei';
 % hoc_dist_name = 'emd hat,wei';
+hoc_dist_name = 'cosine,wei';
 
 % =========================================================================
 
@@ -133,7 +138,7 @@ end
 
 
 %% Intra Similarity
-figure ('Name','Intra Similarity');
+
 intra_sim = zeros(1,n-1);
 for o = 1:obj_cnt 
     disp(['Obj' num2str(o) ' Intra Similarity Calculation.'] );
@@ -160,17 +165,11 @@ for o = 1:obj_cnt
 %     hold on
 end
 % hold off
-clf
-pl= plot (1:n-1 ,intra_sim(1,:) ,'r-',1:n-1 , intra_sim(2,:), 'g-',1:n-1 , intra_sim(3,:),'b-');
-set(pl,'LineWidth',2);
-legend ('obj1','obj2','obj3','Location', 'SouthEast');
-xlim([1 n]);
-ylim([0.9 1]);
-drawnow;
+
 
 
 %% Inter Similarity
-figure ('Name','Inter Similarity');
+
 inter_sim = zeros (obj_cnt,obj_cnt,n);
 for o1 = 1:obj_cnt
     for o2 = o1+1:obj_cnt
@@ -192,16 +191,9 @@ o1o2 = squeeze(inter_sim(1,2,:));
 o2o3 = squeeze(inter_sim(2,3,:));
 o1o3 = squeeze(inter_sim(1,3,:));
 
-clf
-pl= plot (1:n ,o1o2 ,'k-',1:n , o2o3, 'c-',1:n , o1o3,'m-');
-set(pl,'LineWidth',2);
-legend ('obj1-obj2','obj2-obj3','obj1-obj3','Location', 'SouthEast');
-xlim([1 n+1]);
-ylim([0.7 1]);
-drawnow;
 
 %% Template Matching
-figure ('Name','Template Matching');
+
 template_sim = zeros(1,n-1);
 for o = 1:obj_cnt 
     hoc2 = frame_obj{1,o}.hoc; % template
@@ -229,16 +221,10 @@ for o = 1:obj_cnt
 %     hold on
 end
 % hold off
-clf
-pl= plot (1:n-1 ,intra_sim(1,:) ,'r-',1:n-1 , template_sim(2,:), 'g-',1:n-1 , intra_sim(3,:),'b-');
-set(pl,'LineWidth',2);
-legend ('obj1','obj2','obj3','Location', 'SouthWest');
-xlim([1 n]);
-ylim([0.9 1]);
-drawnow;
+
 
 %% Template Matching with Model Update
-figure ('Name','Template Matching with Update');
+
 utemplate_sim = zeros(1,n-1);
 for o = 1:obj_cnt 
     disp(['Obj' num2str(o) ' Updated Template Similarity Calculation.'] );
@@ -264,15 +250,52 @@ for o = 1:obj_cnt
 end
 % hold off
 
+
+%% Normalization Phase
+max_sim = max([intra_sim(:); inter_sim(:); template_sim(:); utemplate_sim(:)]);
+
+
+
+
+%% Results
+figure ('Name','Intra Similarity');
 clf
-pl= plot (1:n-1 ,intra_sim(1,:) ,'r-',1:n-1 , utemplate_sim(2,:), 'g-',1:n-1 , intra_sim(3,:),'b-');
+pl= plot (1:n-1 ,intra_sim(1,:) ,'r-',1:n-1 , intra_sim(2,:), 'g-',1:n-1 , intra_sim(3,:),'b-');
+set(pl,'LineWidth',2);
+legend ('obj1','obj2','obj3','Location', 'SouthEast');
+xlim([1 n]);
+ylim([0.9 1]);
+drawnow;
+
+figure ('Name','Inter Similarity');
+clf
+pl= plot (1:n ,o1o2 ,'k-',1:n , o2o3, 'c-',1:n , o1o3,'m-');
+set(pl,'LineWidth',2);
+legend ('obj1-obj2','obj2-obj3','obj1-obj3','Location', 'SouthEast');
+xlim([1 n+1]);
+ylim([0.7 1]);
+drawnow;
+
+figure ('Name','Template Matching');
+clf
+pl= plot (1:n-1 ,template_sim(1,:) ,'r-',1:n-1 , template_sim(2,:), 'g-',1:n-1 , template_sim(3,:),'b-');
 set(pl,'LineWidth',2);
 legend ('obj1','obj2','obj3','Location', 'SouthWest');
 xlim([1 n]);
 ylim([0.9 1]);
 drawnow;
 
-%% Results
+figure ('Name','Template Matching with Update');
+clf
+pl= plot (1:n-1 ,utemplate_sim(1,:) ,'r-',1:n-1 , utemplate_sim(2,:), 'g-',1:n-1 , utemplate_sim(3,:),'b-');
+set(pl,'LineWidth',2);
+legend ('obj1','obj2','obj3','Location', 'SouthWest');
+xlim([1 n]);
+ylim([0.9 1]);
+drawnow;
+
+
+
 s1 = (sum(intra_sim')/n) * 100;
 s2 = [sum(inter_sim(1,2,:)) sum(inter_sim(1,3,:)) sum(inter_sim(2,3,:))]/(n-1)*100;
 s3 = sum(template_sim')/n*100;

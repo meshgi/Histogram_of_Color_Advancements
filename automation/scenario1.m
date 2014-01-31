@@ -1,4 +1,4 @@
-function s = scenario1 (hoc_name,gridding,hoc_param,hoc_dist_name,hoc_update)
+function s = scenario1 (hoc_name,gridding,hoc_param,hoc_dist_name)
 
 hoc_name = [hoc_name gridding];
 obj_cnt = 3;
@@ -10,7 +10,13 @@ for i = 1:obj_cnt
 end
 n = length(obj_img_list{1,1});
 
-[ctrs,q] = hoc_init ( hoc_name , imread('data/scenario 1/frame_0455.jpg'), hoc_param);
+ctrs_name = ['automation/' hoc_name, num2str(hoc_param) '.mat'];
+if exist (ctrs_name , 'file') == 2
+    load (ctrs_name);
+else
+    [ctrs,q] = hoc_init ( hoc_name , imread('data/scenario 1/frame_0455.jpg'), hoc_param);
+    save(ctrs_name, 'ctrs' , 'q');
+end
 
 for o = 1:obj_cnt
     for i = 1:n
@@ -65,23 +71,11 @@ o1o2 = squeeze(inter_sim(1,2,:));
 o2o3 = squeeze(inter_sim(2,3,:));
 o1o3 = squeeze(inter_sim(1,3,:));
 
+%% Preparation for template update phase
+template_update ( 'clear' );
 
-%% Template Matching
-template_sim = zeros(1,n-1);
-for o = 1:obj_cnt 
-    hoc2 = frame_obj{1,o}.hoc; % template
-    cof2 = frame_obj{1,o}.rat; % template
-    
-    for i = 2:n
-        hoc1 = frame_obj{i,o}.hoc; % this frame
-        rat1 = frame_obj{i,o}.rat; % this frame
-        
-        template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
-    end
-end
-
-%% Template Matching with Model Update
-utemplate_sim = zeros(1,n-1);
+%% Template Matching with Model Update = none
+utemplate_sim = zeros(obj_cnt,n-1);
 for o = 1:obj_cnt 
 
     hoc2 = frame_obj{1,o}.hoc; % template
@@ -89,26 +83,92 @@ for o = 1:obj_cnt
     for i = 2:n
         hoc1 = frame_obj{i,o}.hoc; % this frame
         cof1 = frame_obj{i,o}.rat;
-        hoc2 = template_update ( hoc_update , hoc2 , hoc1 , i );
+        hoc2 = template_update ( 'none' , hoc2 , hoc1 , i );
     
         utemplate_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
     end
 end
 
+%% Template Matching with Model Update = moving average
+u1template_sim = zeros(obj_cnt,n-1);
+for o = 1:obj_cnt 
+
+    hoc2 = frame_obj{1,o}.hoc; % template
+    cof2 = frame_obj{1,o}.rat; % template
+    for i = 2:n
+        hoc1 = frame_obj{i,o}.hoc; % this frame
+        cof1 = frame_obj{i,o}.rat;
+        hoc2 = template_update ( 'moving average' , hoc2 , hoc1 , i );
+    
+        u1template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
+    end
+end
+
+%% Template Matching with Model Update = last 5
+u2template_sim = zeros(obj_cnt,n-1);
+for o = 1:obj_cnt 
+
+    hoc2 = frame_obj{1,o}.hoc; % template
+    cof2 = frame_obj{1,o}.rat; % template
+    for i = 2:n
+        hoc1 = frame_obj{i,o}.hoc; % this frame
+        cof1 = frame_obj{i,o}.rat;
+        hoc2 = template_update ( 'last 5' , hoc2 , hoc1 , i );
+    
+        u2template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
+    end
+end
+
+%% Template Matching with Model Update = average all
+u3template_sim = zeros(obj_cnt,n-1);
+for o = 1:obj_cnt 
+
+    hoc2 = frame_obj{1,o}.hoc; % template
+    cof2 = frame_obj{1,o}.rat; % template
+    for i = 2:n
+        hoc1 = frame_obj{i,o}.hoc; % this frame
+        cof1 = frame_obj{i,o}.rat;
+        hoc2 = template_update ( 'average all' , hoc2 , hoc1 , i );
+    
+        u3template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
+    end
+end
+
+%% Template Matching with Model Update = update with memory
+u4template_sim = zeros(obj_cnt,n-1);
+for o = 1:obj_cnt 
+
+    hoc2 = frame_obj{1,o}.hoc; % template
+    cof2 = frame_obj{1,o}.rat; % template
+    for i = 2:n
+        hoc1 = frame_obj{i,o}.hoc; % this frame
+        cof1 = frame_obj{i,o}.rat;
+        hoc2 = template_update ( 'update with memory' , hoc2 , hoc1 , i );
+    
+        u4template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
+    end
+end
+
+
 %% Results
 s1 = (sum(intra_sim')/n) * 100;
 s2 = [sum(inter_sim(1,2,:)) sum(inter_sim(1,3,:)) sum(inter_sim(2,3,:))]/(n-1)*100;
 s3 = sum(utemplate_sim')/n*100;
+s4 = sum(u1template_sim')/n*100;
+s5 = sum(u2template_sim')/n*100;
+s6 = sum(u3template_sim')/n*100;
+s7 = sum(u4template_sim')/n*100;
+
 
 %% Total Results
 s(1) = mean(intra_sim(:)) * 100; 
 s(2) = mean(s2);   
 s(3) = mean(s3);   
-s(4) = sqrt(s(1) * (100-s(2)));
+s(4) = mean(s4);
+s(5) = mean(s5);
+s(6) = mean(s6);
+s(7) = mean(s7);
+s(8) = sqrt(s(1) * (100-s(2)));
 
-% disp(' ');
-% disp(['Total (mean/var) Intra         ' mat2str(s(1))]);
-% disp(['Total (mean/var) Inter         ' mat2str(s(2))]);
-% disp(['Total (mean/var) Template      ' mat2str(s(3))]);
-% disp(['Score of This Combination (intra*(1-inter)):   '  num2str(s(4))]);
+
 
