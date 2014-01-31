@@ -40,7 +40,9 @@ function new_template = template_update ( method , old_template , new_entry , fr
                 end
             end
             new_template = squeeze(mean(q_hoc,1));
-            new_template = new_template';
+            if (size(new_template,2) ~= size(old_template,2))
+                new_template = new_template';
+            end
                 
         case 'update with memory'
             alpha = 0.1; %short term memory forgetting rate

@@ -18,7 +18,7 @@ obj_cnt = 3;
 % hoc_name = 'conventional';  hoc_param = 5;
 % hoc_name = 'clustering';  hoc_param = 40;
 
-hoc_name = 'conventional,g2,avg';  hoc_param = 5;
+% hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;
 % hoc_name = 'conventional,g3,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g3,avg';  hoc_param = 40;
@@ -57,13 +57,13 @@ hoc_update = 'moving average';
 % hoc_dist_name = 'chi-square';
 % hoc_dist_name = 'intersection';
 % hoc_dist_name = 'bhattacharyya';
-% hoc_dist_name = 'kl-divergance';
+hoc_dist_name = 'kl-divergance';
 % hoc_dist_name = 'diffusion';
 % hoc_dist_name = 'match';
 % hoc_dist_name = 'jeffry div';
 % hoc_dist_name = 'kolmogorov smirnov';
 % hoc_dist_name = 'cramer von mises';
-hoc_dist_name = 'quadratic';
+% hoc_dist_name = 'quadratic';
 % hoc_dist_name = 'quadratic-chi';
 % hoc_dist_name = 'emd hat';
 % hoc_dist_name = 'cosine';
@@ -159,7 +159,7 @@ for o = 1:obj_cnt
             subplot (3,3,[7,8]);  bar (abs(hoc1-hoc2)); xlim([0 length(hoc1)]); ylim([0 0.2]); drawnow;
         end
 
-        intra_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1 , cof2 , q);
+        intra_sim (o,i-1) = hoc_distance ( hoc_dist_name, hoc1, hoc2, cof1 , cof2 , q);
     end
 %     plot (1:n-1 , intra_sim(o,:),colors{1,o},'LineWidth',2);
 %     hold on
@@ -181,16 +181,11 @@ for o1 = 1:obj_cnt
             cof1 = frame_obj{i,o1}.rat; % obj 1
             cof2 = frame_obj{i,o2}.rat; % obj 2
             
-            inter_sim (o1,o2,i) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
+            inter_sim (o1,o2,i) = hoc_distance ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
             inter_sim (o2,o1,i) = inter_sim (o1,o2,i);
         end
     end
 end
-
-o1o2 = squeeze(inter_sim(1,2,:));
-o2o3 = squeeze(inter_sim(2,3,:));
-o1o3 = squeeze(inter_sim(1,3,:));
-
 
 %% Template Matching
 
@@ -215,7 +210,7 @@ for o = 1:obj_cnt
             drawnow;
         end
 
-        template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
+        template_sim (o,i-1) = hoc_distance ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
     end
 %     plot (1:n-1 , template_sim(o,:),colors{1,o},'LineWidth',2);
 %     hold on
@@ -243,7 +238,7 @@ for o = 1:obj_cnt
             drawnow;
         end
 
-        utemplate_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
+        utemplate_sim (o,i-1) = hoc_distance ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
     end
 %     plot (1:n-1 , intra_sim(o,:),colors{1,o},'LineWidth',2);
 %     hold on
@@ -252,9 +247,19 @@ end
 
 
 %% Normalization Phase
-max_sim = max([intra_sim(:); inter_sim(:); template_sim(:); utemplate_sim(:)]);
+max_dist = max([intra_sim(:); inter_sim(:); template_sim(:); utemplate_sim(:)]);
 
+big1 = ones(size(intra_sim));
+big2 = ones(size(inter_sim));
 
+intra_sim = big1 - intra_sim / max_dist;
+inter_sim = big2 - inter_sim / max_dist;
+template_sim = big1 - template_sim / max_dist;
+utemplate_sim = big1 - utemplate_sim / max_dist;
+
+o1o2 = squeeze(inter_sim(1,2,:));
+o2o3 = squeeze(inter_sim(2,3,:));
+o1o3 = squeeze(inter_sim(1,3,:));
 
 
 %% Results

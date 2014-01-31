@@ -45,7 +45,7 @@ for o = 1:obj_cnt
         cof1 = frame_obj{i,o}.rat; % this frame
         cof2 = frame_obj{i-1,o}.rat; % last frame
         
-        intra_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1 , cof2 , q);
+        intra_sim (o,i-1) = hoc_distance ( hoc_dist_name, hoc1, hoc2, cof1 , cof2 , q);
     end
 end
 
@@ -61,15 +61,12 @@ for o1 = 1:obj_cnt
             cof1 = frame_obj{i,o1}.rat; % obj 1
             cof2 = frame_obj{i,o2}.rat; % obj 2
             
-            inter_sim (o1,o2,i) = hoc_similarity ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
+            inter_sim (o1,o2,i) = hoc_distance ( hoc_dist_name, hoc1, hoc2, cof1, cof2 , q);
             inter_sim (o2,o1,i) = inter_sim (o1,o2,i);
         end
     end
 end
 
-o1o2 = squeeze(inter_sim(1,2,:));
-o2o3 = squeeze(inter_sim(2,3,:));
-o1o3 = squeeze(inter_sim(1,3,:));
 
 %% Preparation for template update phase
 template_update ( 'clear' );
@@ -85,7 +82,7 @@ for o = 1:obj_cnt
         cof1 = frame_obj{i,o}.rat;
         hoc2 = template_update ( 'none' , hoc2 , hoc1 , i );
     
-        utemplate_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
+        utemplate_sim (o,i-1) = hoc_distance ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
     end
 end
 
@@ -100,7 +97,7 @@ for o = 1:obj_cnt
         cof1 = frame_obj{i,o}.rat;
         hoc2 = template_update ( 'moving average' , hoc2 , hoc1 , i );
     
-        u1template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
+        u1template_sim (o,i-1) = hoc_distance ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
     end
 end
 
@@ -115,7 +112,7 @@ for o = 1:obj_cnt
         cof1 = frame_obj{i,o}.rat;
         hoc2 = template_update ( 'last 5' , hoc2 , hoc1 , i );
     
-        u2template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
+        u2template_sim (o,i-1) = hoc_distance ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
     end
 end
 
@@ -130,7 +127,7 @@ for o = 1:obj_cnt
         cof1 = frame_obj{i,o}.rat;
         hoc2 = template_update ( 'average all' , hoc2 , hoc1 , i );
     
-        u3template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
+        u3template_sim (o,i-1) = hoc_distance ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
     end
 end
 
@@ -145,10 +142,27 @@ for o = 1:obj_cnt
         cof1 = frame_obj{i,o}.rat;
         hoc2 = template_update ( 'update with memory' , hoc2 , hoc1 , i );
     
-        u4template_sim (o,i-1) = hoc_similarity ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
+        u4template_sim (o,i-1) = hoc_distance ( hoc_dist_name, hoc1, hoc2 , cof1 , cof2 , q);
     end
 end
 
+%% Normalization Phase
+max_dist = max([intra_sim(:); inter_sim(:); utemplate_sim(:); u1template_sim(:); u2template_sim(:); u3template_sim(:); u4template_sim(:)]);
+
+big1 = ones(size(intra_sim));
+big2 = ones(size(inter_sim));
+
+intra_sim = big1 - intra_sim / max_dist;
+inter_sim = big2 - inter_sim / max_dist;
+utemplate_sim = big1 - utemplate_sim / max_dist;
+u1template_sim = big1 - u1template_sim / max_dist;
+u2template_sim = big1 - u2template_sim / max_dist;
+u3template_sim = big1 - u3template_sim / max_dist;
+u4template_sim = big1 - u4template_sim / max_dist;
+
+o1o2 = squeeze(inter_sim(1,2,:));
+o2o3 = squeeze(inter_sim(2,3,:));
+o1o3 = squeeze(inter_sim(1,3,:));
 
 %% Results
 s1 = (sum(intra_sim')/n) * 100;

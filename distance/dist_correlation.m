@@ -8,6 +8,7 @@ d_den = sqrt(((h1-h1_m)*(h1-h1_m)')*((h2-h2_m)*(h2-h2_m)'));
 
 if (d_den ~=0)
     d = d_enu / d_den;
+    d = 1 - d;
 else
     d = inf;
     disp ('Singularity problem: one of the histograms is zero or uniform');
