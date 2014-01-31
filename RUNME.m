@@ -18,7 +18,7 @@ obj_cnt = 3;
 % hoc_name = 'conventional';  hoc_param = 5;
 % hoc_name = 'clustering';  hoc_param = 40;
 
-% hoc_name = 'conventional,g2,avg';  hoc_param = 5;
+hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;
 % hoc_name = 'conventional,g3,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g3,avg';  hoc_param = 40;
@@ -32,7 +32,7 @@ obj_cnt = 3;
 % hoc_name = 'conventional,g5,wei';  hoc_param = 5;
 % hoc_name = 'clustering,g5,wei';  hoc_param = 40;
 
-hoc_name = 'conventional,g2';  hoc_param = 5;
+% hoc_name = 'conventional,g2';  hoc_param = 5;
 % hoc_name = 'clustering,g2';  hoc_param = 40;
 % hoc_name = 'conventional,g3';  hoc_param = 5;
 % hoc_name = 'clustering,g3';  hoc_param = 40;
@@ -63,7 +63,7 @@ hoc_update = 'moving average';
 % hoc_dist_name = 'jeffry div';
 % hoc_dist_name = 'kolmogorov smirnov';
 % hoc_dist_name = 'cramer von mises';
-% hoc_dist_name = 'quadratic';
+hoc_dist_name = 'quadratic';
 % hoc_dist_name = 'quadratic-chi';
 % hoc_dist_name = 'emd hat';
 % hoc_dist_name = 'cosine';
@@ -105,7 +105,7 @@ hoc_update = 'moving average';
 % hoc_dist_name = 'quadratic,wei';
 % hoc_dist_name = 'quadratic-chi,wei';
 % hoc_dist_name = 'emd hat,wei';
-hoc_dist_name = 'cosine,wei';
+% hoc_dist_name = 'cosine,wei';
 
 % =========================================================================
 

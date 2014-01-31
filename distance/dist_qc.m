@@ -6,4 +6,4 @@ Z = (h1 + h2) * A;
 Z(Z==0) = 1;
 Z = Z.^m;
 D = (h1-h2)./Z;
-d = sqrt(D*A*D');
+d = sqrt(max(D*A*D',0));
