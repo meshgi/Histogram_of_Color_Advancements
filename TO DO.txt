@@ -11,23 +11,25 @@ HOC:
 ====
 * Color Histogram Peak Selection
 * Using only bins from the full set that foreground is not zero in them
-* HSV Space
+* HSV Space (8x8x8), (8x8x4)
 * Add V channel of HSV space to RGB to have RGB-V space
 * JND HOC
 * Gridding using adaptive vertical projection
 * Gridding only vertically (2x1, 3x1, 5x1)
+* Use color moments
+* use the rank of HOC bins instead of their values (value = descending sort index) and normalize them by deviding them by n(n+1)/2
+* Implement corellograms
 
 
 DISTANCES:
 ==========
-* Diffusion Distance
-* Earth Mover Distance
+* Statistical Distances of two histogram (mean and variance based) -> weigthed mean variance, bhattacharyya distance, 
+* Pixel-wise Template Matching
 
 
 MODEL UPDATE:
 =============
-* Model update: 5 recent frames
-* Model update: Grid based update (averaging, weighted, beta dist, ...)
+* Model update: Grid based update using beta distribution
 
 
 VISUALIZATION:
@@ -41,8 +43,27 @@ FURTHER PROCESSING:
 ===================
 * Compare Each Distance measure over different HOC schemes, for intra and template
 * Calculate inter to intra ratio for each combination (the smaller, the better)
+* Different HOC with Best Param, Similar Dist
+* Same HOC with Different Params, Similar Dist
+* Same HOC with Same Params, Different Dist
+* Same HOC with Same Params, Different Dist, Different Gridding
+* Plot: (Score vs. Number of Bins) --> different chart for each HOC, each line is (dist,mu)
+* Plot: (Score vs. Grid Size) --> each line is (hoc,dist,mu,param)
 
-
+JOURNAL 2 ALGORITHM:
+====================
+calculate all boxes possible for this video
+for all frames
+... for all bounding boxes
+...... for all HOC+grigging types
+......... for all model update models
+............ for all distances
+............... calc dist for (hoc+gridding, dist, mu)
+............... sort all box distances
+............... keep the best box
+............... keep the rank of ground truth box
+visualize best boxes
+calculate average ranking of best boxes as a measure of good ness of (hoc,dist,mu)
 
 
 
