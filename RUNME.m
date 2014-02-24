@@ -15,7 +15,7 @@ option_verbose = false;
 obj_cnt = 3;
 % =========================================================================
 
-% hoc_name = 'conventional';  hoc_param = 5;
+hoc_name = 'conventional';  hoc_param = 5;
 % hoc_name = 'clustering';  hoc_param = 40;
 
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
@@ -50,23 +50,23 @@ hoc_update = 'moving average';
 
 % =========================================================================
 
-% hoc_dist_name = 'L1';
-% hoc_dist_name = 'L2';
-% hoc_dist_name = 'Linf';
-% hoc_dist_name = 'correlation';
-% hoc_dist_name = 'chi-square';
+hoc_dist_name = 'L1';
+hoc_dist_name = 'L2';
+hoc_dist_name = 'Linf';
+hoc_dist_name = 'correlation';
+hoc_dist_name = 'chi-square';
 % hoc_dist_name = 'intersection';
-% hoc_dist_name = 'bhattacharyya';
+hoc_dist_name = 'bhattacharyya';
 hoc_dist_name = 'kl-divergance';
-% hoc_dist_name = 'diffusion';
-% hoc_dist_name = 'match';
-% hoc_dist_name = 'jeffry div';
-% hoc_dist_name = 'kolmogorov smirnov';
-% hoc_dist_name = 'cramer von mises';
-% hoc_dist_name = 'quadratic';
-% hoc_dist_name = 'quadratic-chi';
-% hoc_dist_name = 'emd hat';
-% hoc_dist_name = 'cosine';
+hoc_dist_name = 'diffusion';
+hoc_dist_name = 'match';
+hoc_dist_name = 'jeffry div';
+hoc_dist_name = 'kolmogorov smirnov';
+hoc_dist_name = 'cramer von mises';
+hoc_dist_name = 'quadratic';
+hoc_dist_name = 'quadratic-chi';
+hoc_dist_name = 'emd hat';
+hoc_dist_name = 'cosine';
 
 
 
@@ -269,7 +269,7 @@ pl= plot (1:n-1 ,intra_sim(1,:) ,'r-',1:n-1 , intra_sim(2,:), 'g-',1:n-1 , intra
 set(pl,'LineWidth',2);
 legend ('obj1','obj2','obj3','Location', 'SouthEast');
 xlim([1 n]);
-ylim([0.9 1]);
+ylim([0 1]);
 drawnow;
 
 figure ('Name','Inter Similarity');
@@ -278,26 +278,26 @@ pl= plot (1:n ,o1o2 ,'k-',1:n , o2o3, 'c-',1:n , o1o3,'m-');
 set(pl,'LineWidth',2);
 legend ('obj1-obj2','obj2-obj3','obj1-obj3','Location', 'SouthEast');
 xlim([1 n+1]);
-ylim([0.7 1]);
+ylim([0 1]);
 drawnow;
 
-figure ('Name','Template Matching');
-clf
-pl= plot (1:n-1 ,template_sim(1,:) ,'r-',1:n-1 , template_sim(2,:), 'g-',1:n-1 , template_sim(3,:),'b-');
-set(pl,'LineWidth',2);
-legend ('obj1','obj2','obj3','Location', 'SouthWest');
-xlim([1 n]);
-ylim([0.9 1]);
-drawnow;
+% figure ('Name','Template Matching');
+% clf
+% pl= plot (1:n-1 ,template_sim(1,:) ,'r-',1:n-1 , template_sim(2,:), 'g-',1:n-1 , template_sim(3,:),'b-');
+% set(pl,'LineWidth',2);
+% legend ('obj1','obj2','obj3','Location', 'SouthWest');
+% xlim([1 n]);
+% ylim([0.9 1]);
+% drawnow;
 
-figure ('Name','Template Matching with Update');
-clf
-pl= plot (1:n-1 ,utemplate_sim(1,:) ,'r-',1:n-1 , utemplate_sim(2,:), 'g-',1:n-1 , utemplate_sim(3,:),'b-');
-set(pl,'LineWidth',2);
-legend ('obj1','obj2','obj3','Location', 'SouthWest');
-xlim([1 n]);
-ylim([0.9 1]);
-drawnow;
+% figure ('Name','Template Matching with Update');
+% clf
+% pl= plot (1:n-1 ,utemplate_sim(1,:) ,'r-',1:n-1 , utemplate_sim(2,:), 'g-',1:n-1 , utemplate_sim(3,:),'b-');
+% set(pl,'LineWidth',2);
+% legend ('obj1','obj2','obj3','Location', 'SouthWest');
+% xlim([1 n]);
+% ylim([0.9 1]);
+% drawnow;
 
 
 
