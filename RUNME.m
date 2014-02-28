@@ -14,9 +14,13 @@ option_verbose = false;
 
 obj_cnt = 3;
 % =========================================================================
+% colorspace_name = 'rgb';
+colorspace_name = 'hsv';
 
-hoc_name = 'conventional';  hoc_param = 5;
-% hoc_name = 'clustering';  hoc_param = 40;
+% =========================================================================
+
+% hoc_name = 'conventional';  hoc_param = 5;
+hoc_name = 'clustering';  hoc_param = 40;
 
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;
@@ -50,23 +54,24 @@ hoc_update = 'moving average';
 
 % =========================================================================
 
-hoc_dist_name = 'L1';
-hoc_dist_name = 'L2';
-hoc_dist_name = 'Linf';
-hoc_dist_name = 'correlation';
-hoc_dist_name = 'chi-square';
+% hoc_dist_name = 'L1';
+% hoc_dist_name = 'L2';
+% hoc_dist_name = 'Linf';
+% hoc_dist_name = 'correlation';
+% hoc_dist_name = 'chi-square';
 % hoc_dist_name = 'intersection';
-hoc_dist_name = 'bhattacharyya';
+% hoc_dist_name = 'bhattacharyya';
 hoc_dist_name = 'kl-divergance';
-hoc_dist_name = 'diffusion';
-hoc_dist_name = 'match';
-hoc_dist_name = 'jeffry div';
-hoc_dist_name = 'kolmogorov smirnov';
-hoc_dist_name = 'cramer von mises';
-hoc_dist_name = 'quadratic';
-hoc_dist_name = 'quadratic-chi';
-hoc_dist_name = 'emd hat';
-hoc_dist_name = 'cosine';
+% hoc_dist_name = 'diffusion';
+% hoc_dist_name = 'match';
+% hoc_dist_name = 'jeffry div';
+% hoc_dist_name = 'kolmogorov smirnov';
+% hoc_dist_name = 'cramer von mises';
+% hoc_dist_name = 'quadratic';
+% hoc_dist_name = 'quadratic-chi';
+% hoc_dist_name = 'emd hat';
+% hoc_dist_name = 'cosine';
+% hoc_dist_name = 'L0';
 
 
 
@@ -117,7 +122,7 @@ for i = 1:obj_cnt
 end
 n = length(obj_img_list{1,1});
 
-[ctrs,q] = hoc_init ( hoc_name , imread('data/scenario 1/frame_0455.jpg'), hoc_param);
+[ctrs,q] = hoc_init ( hoc_name , imread('data/scenario 1/frame_0455.jpg'), hoc_param , colorspace_name);
 
 for o = 1:obj_cnt
     disp (['Calculating HOC for Obj ' num2str(o)]);
@@ -126,7 +131,7 @@ for o = 1:obj_cnt
         msk = imread(['data/scenario 1/obj' num2str(o) '/' obj_msk_list{1,o}(i).name]);
 
         r = fg_bg_ratio ( hoc_name , msk );
-        h = hoc ( hoc_name , img , ctrs , r);
+        h = hoc ( hoc_name , img , ctrs , r , colorspace_name);
         
         frame_obj{i,o}.img = img;
         frame_obj{i,o}.msk = msk;

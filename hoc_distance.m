@@ -49,6 +49,10 @@ function d = hoc_distance ( method, h1 , h2 , cof1 , cof2 , q)
             d = dist_emd_hat ( h1 , h2 , q );
         case 'cosine'
             d = dist_cosine ( h1 , h2 );
+        case 'L0'
+            d = dist_l0 ( h1 , h2 );
+            
+            
             
             
             
