@@ -19,8 +19,8 @@ colorspace_name = 'hsv';
 
 % =========================================================================
 
-% hoc_name = 'conventional';  hoc_param = 5;
-hoc_name = 'clustering';  hoc_param = 40;
+hoc_name = 'conventional';  hoc_param = [8,1,1];
+% hoc_name = 'clustering';  hoc_param = 40;
 
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;

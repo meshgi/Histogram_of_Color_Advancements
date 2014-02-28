@@ -1,9 +1,21 @@
 function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
     switch (method)
         case {'conventional','conventional,g2,avg','conventional,g3,avg','conventional,g5,avg','conventional,g2,wei','conventional,g3,wei','conventional,g5,wei','conventional,g2','conventional,g3','conventional,g5'}
-            m = hoc_param(1);  % single color channel quantization
-            q = linspace(1,255,m);
-            ctrs = setprod (q,q,q);
+            m1 = hoc_param(1);  % single color channel quantization
+            if (length(hoc_param)==1)
+                q = linspace(1,255,m1);
+                ctrs = setprod (q,q,q);
+            else
+                m2 = hoc_param(2);
+                m3 = hoc_param(3);
+                
+                q1 = linspace(1,255,m1);
+                q2 = linspace(1,255,m2);
+                q3 = linspace(1,255,m3);
+                
+                ctrs = setprod (q1,q2,q3);
+            end
+
             rgb_ctrs = ctrs;
 
         case {'clustering','clustering,g2,avg','clustering,g3,avg','clustering,g5,avg','clustering,g2,wei','clustering,g3,wei','clustering,g5,wei','clustering,g2','clustering,g3','clustering,g5'}
