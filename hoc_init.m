@@ -27,7 +27,7 @@ function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
                     img = uint8(255*rgb2hsv(img));
             end
                         
-            
+            bins = hoc_param(1);
             % get all points of image, sample them choosing points in equivalent
             % distance
             all_pixels = reshape (img(:,:,1:3) , size(img,1) * size(img,2) , size(img,3));
@@ -36,12 +36,20 @@ function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
 
             % feed these sample points (RGB) to K-means
             opts=statset('Display','final');
-            [~,ctrs]=kmeans( samples ,hoc_param(1),'Options',opts,'Replicates',3);
+            [idx,ctrs]=kmeans( samples ,bins,'Options',opts,'Replicates',3);
+            
+            % if SORTING is enabled
+            if (length(hoc_param)>1 && hoc_param(2)== 1)
+                clusters = hist(idx,bins);
+                [~,sorted_clusters] = sort (clusters, 'descend');
+                ctrs = ctrs(sorted_clusters,:);
+            end
             
             switch (cs_name)
+                case 'rgb'
+                    rgb_ctrs = ctrs;
                 case 'hsv'
-                    rgb_ctrs = 255*hsv2rgb(ctrs/255);
-                                
+                    rgb_ctrs = 255*hsv2rgb(ctrs/255);          
             end
             
     end

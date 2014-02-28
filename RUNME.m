@@ -14,13 +14,13 @@ option_verbose = false;
 
 obj_cnt = 3;
 % =========================================================================
-% colorspace_name = 'rgb';
-colorspace_name = 'hsv';
+colorspace_name = 'rgb';
+% colorspace_name = 'hsv';
 
 % =========================================================================
 
-hoc_name = 'conventional';  hoc_param = [8,1,1];
-% hoc_name = 'clustering';  hoc_param = 40;
+% hoc_name = 'conventional';  hoc_param = [8,8,4];
+hoc_name = 'clustering';  hoc_param = [40 , 1]; % [bin count , sorting enabled]
 
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;
