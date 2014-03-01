@@ -19,8 +19,8 @@ colorspace_name = 'rgb';
 
 % =========================================================================
 
-% hoc_name = 'conventional';  hoc_param = [8,8,4];
-hoc_name = 'clustering';  hoc_param = [40 , 1]; % [bin count , sorting enabled]
+hoc_name = 'conventional';  hoc_param = [8,8,4];
+% hoc_name = 'clustering';  hoc_param = [40 , 1]; % [bin count , sorting enabled]
 
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;
@@ -60,7 +60,7 @@ hoc_update = 'moving average';
 % hoc_dist_name = 'correlation';
 % hoc_dist_name = 'chi-square';
 % hoc_dist_name = 'intersection';
-% hoc_dist_name = 'bhattacharyya';
+hoc_dist_name = 'bhattacharyya';
 % hoc_dist_name = 'kl-divergance';
 % hoc_dist_name = 'diffusion';
 % hoc_dist_name = 'match';
@@ -72,7 +72,7 @@ hoc_update = 'moving average';
 % hoc_dist_name = 'emd hat';
 % hoc_dist_name = 'cosine';
 % hoc_dist_name = 'L0';
-hoc_dist_name = 'noticeable';
+% hoc_dist_name = 'noticeable';
 
 
 % hoc_dist_name = 'L1,avg';
