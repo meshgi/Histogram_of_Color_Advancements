@@ -7,14 +7,12 @@ database_path = 'D:\scenario 2\';
 
 colorspace_name = 'rgb';
 hoc_name = 'conventional';  
-hoc_param = [8,8,4];
+hoc_param = [5,5,5];
 hoc_update = 'none';
 hoc_dist_name = 'bhattacharyya';
 
 video_database = find_videos ( database_path );
     
-% Football1, Basketball
-
 scale = 1;
 
 for vid = 1:length(video_database)
@@ -22,6 +20,11 @@ for vid = 1:length(video_database)
     disp(' ')
     disp(['Reading video ' video_name])
     [frames, vid_sz, gt , first] = video_info ( database_path, video_name );
+    
+    if (length(vid_sz) == 2 || vid_sz(3) == 1)
+        disp('... Grayscale Video - Skip!')
+        continue;
+    end
     
     disp('... Initializing HOC')
     [ctrs,q] = hoc_init ( hoc_name , first , hoc_param , colorspace_name);
@@ -31,12 +34,12 @@ for vid = 1:length(video_database)
     for fr = 1:frames
         [img , gt_img , gt_bb] = video_frame ( database_path, video_name, gt , fr );
 
-%         subplot(3,3,[1,2,4,5]); imshow(img);
-%         subplot(3,3,3); imshow(gt_img);
-%         set(h,'Name',num2str(fr));
-%         drawnow;
+        subplot(3,3,[1,2,4,5]); imshow(img);
+        subplot(3,3,3); imshow(gt_img);
+        set(h,'Name',num2str(fr));
+        drawnow;
 
-        boxes = sliding_window (vid_sz, gt_bb);
+%         boxes = sliding_window (vid_sz, gt_bb);
             
 
     end % fr
