@@ -30,18 +30,26 @@ for vid = 1:length(video_database)
 %     [ctrs,q] = hoc_init ( hoc_name , first , hoc_param , colorspace_name);
 
     disp(['... Processing ' num2str(frames) ' frames'])
-    h = figure;
+%     h = figure;
     for fr = 1:frames
         [img , gt_img , gt_bb] = video_frame ( database_path, video_name, gt , fr );
 
-        subplot(3,3,[1,2,4,5]); imshow(img);
-        subplot(3,3,3); imshow(gt_img);
-        set(h,'Name',num2str(fr));
+        subplot(2,3,[1,2,4,5]); imshow(img); hold on;
+        subplot(2,3,[3,6]); imshow(gt_img);
+        set(gcf,'Name',num2str(fr));
         drawnow;
 
         disp('... Creating Box Grid')
-        [boxes , gt_idx] = sliding_window (vid_sz, gt_bb,2);
-        [gt_bb; boxes(gt_idx,:)]    
+        [boxes , gt_idx] = sliding_window (vid_sz, gt_bb,0.5);
+
+        subplot(2,3,[1,2,4,5]);
+        for box = 1:size(boxes,1)
+            rectangle('Position',boxes(box,:),'EdgeColor','k');
+            drawnow
+        end
+        rectangle('Position',boxes(gt_idx,:),'EdgeColor','r','LineWidth',2);
+        drawnow;
+        pause
 
     end % fr
 end % vid
