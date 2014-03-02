@@ -27,7 +27,7 @@ for vid = 1:length(video_database)
     end
     
     disp('... Initializing HOC')
-    [ctrs,q] = hoc_init ( hoc_name , first , hoc_param , colorspace_name);
+%     [ctrs,q] = hoc_init ( hoc_name , first , hoc_param , colorspace_name);
 
     disp(['... Processing ' num2str(frames) ' frames'])
     h = figure;
@@ -39,8 +39,9 @@ for vid = 1:length(video_database)
         set(h,'Name',num2str(fr));
         drawnow;
 
-%         boxes = sliding_window (vid_sz, gt_bb);
-            
+        disp('... Creating Box Grid')
+        [boxes , gt_idx] = sliding_window (vid_sz, gt_bb,2);
+        [gt_bb; boxes(gt_idx,:)]    
 
     end % fr
 end % vid
