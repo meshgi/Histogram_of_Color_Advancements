@@ -2,10 +2,12 @@ function scenario2 ()
 clc;
 clear all;
 close all;
+addpath(genpath('./..'));
 
 database_path = 'D:\scenario 2\';
 oracle_file = 'in sc2.xlsx';
 
+real_tracking = true;
 
 scale = 1;
 
@@ -117,15 +119,31 @@ for oracle_idx = 1:size(oracle,1)
     %         set(gcf,'Color', 'k');
     %         drawnow;
 
+            if real_tracking
+                best_match_idx = box_idx(end);
+                best_match_box = boxes(best_match_idx,:);
+                best_match_img = bb_content(img, best_match_box);
+                best_match_hoc = hoc ( hoc_name , best_match_img , ctrs , 0 , colorspace_name);
 
-            template = template_update (hoc_update, template, gt_hoc, fr);
-            S{oracle_idx,vid,fr} = score;
+                template = template_update (hoc_update, template, best_match_hoc, fr);
+                R{oracle_idx,vid,fr} = best_match_box;
+                
+                imshow(img); hold on; rectangle('Position', best_match_box, 'EdgeColor', 'y'); hold off; drawnow;
+            else
+                template = template_update (hoc_update, template, gt_hoc, fr);
+            end
+            S(fr) = score;
 
         end % fr
+        SS(vid) = mean(S(:));
     end % vid
+    SSS(oracle_idx) = mean(SS(:));
 end % oracle
 
-% Savg = mean(oracle_idx,vid,:)
+% headers = {'Colorspace' , 'Histogramming', 'Similarity Measure', 'P1','P2','P3','MU: non','MU: mov','MU: nrd','MU: que','MU: all','MU: mem'};
+% 
+% xlswrite('automation/out.xlsx',[headers;t])
+% close all
 
 
 
