@@ -8,6 +8,9 @@ function h = hoc ( method, img, ctrs , r , cs_name)
         case 'XYZ'
             cform = makecform('srgb2xyz');
             img = applycform(img,cform);
+        case 'lab'
+            cform = makecform('srgb2lab');
+            img = applycform(img,cform);
     end
 
     h = [];

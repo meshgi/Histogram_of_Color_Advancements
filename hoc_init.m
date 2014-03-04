@@ -32,7 +32,9 @@ function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
                 case 'XYZ'
                     cform = makecform('srgb2xyz');
                     img = applycform(img,cform);
-                    
+                case 'lab'
+                    cform = makecform('srgb2lab');
+                    img = applycform(img,cform);
             end
                         
             bins = hoc_param(1);
@@ -67,7 +69,8 @@ function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
                         a = xyz2rgb * ctrs(i,:)';
                         rgb_ctrs(i,:) = a';
                     end
-                    
+                case 'lab'
+                    rgb_ctrs = ctrs;
             end
             
     end
@@ -92,11 +95,16 @@ function Q = create_similarity_matrix (ctrs, cs_name)
     end
     % imshow(rgb_bins);
 
-    cform = makecform('srgb2lab');
-    lab_bins = applycform(rgb_bins,cform);
-    % imshow(lab_bins);
-
-    ctrs_lab = double(squeeze(lab_bins(1,:,:)));
+    if (strcmp(cs_name,'lab'))
+        ctrs_lab = ctrs;
+    else
+        % ctrs are in rgb
+        cform = makecform('srgb2lab');
+        lab_bins = applycform(rgb_bins,cform);
+        % imshow(lab_bins);
+        ctrs_lab = double(squeeze(lab_bins(1,:,:)));
+    end
+    
     d = zeros(n);
     for i = 1:n
         for j = i+1:n
