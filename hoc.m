@@ -3,6 +3,8 @@ function h = hoc ( method, img, ctrs , r , cs_name)
     switch (cs_name)
         case 'hsv'
             img = uint8(255*rgb2hsv(img));
+        case 'ycbcr'
+            img = rgb2ycbcr(img);
     end
 
     h = [];

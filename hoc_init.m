@@ -27,6 +27,8 @@ function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
                 case 'rgb'
                 case 'hsv'
                     img = uint8(255*rgb2hsv(img));
+                case 'ycbcr'            
+                    img = rgb2ycbcr(img);
             end
                         
             bins = hoc_param(1);
@@ -51,7 +53,9 @@ function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
                 case 'rgb'
                     rgb_ctrs = ctrs;
                 case 'hsv'
-                    rgb_ctrs = 255*hsv2rgb(ctrs/255);          
+                    rgb_ctrs = 255*hsv2rgb(ctrs/255);
+                case 'ycbcr'
+                    rgb_ctrs = ycbcr2rgb(uint8(ctrs));
             end
             
     end

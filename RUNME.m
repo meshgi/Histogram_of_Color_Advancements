@@ -14,14 +14,19 @@ option_verbose = false;
 
 obj_cnt = 3;
 % =========================================================================
-colorspace_name = 'rgb';
+% colorspace_name = 'rgb';
 % colorspace_name = 'hsv';
+colorspace_name = 'ycbcr';
+% colorspace_name = 'XYZ';
+% colorspace_name = 'lab';
+% colorspace_name = 'i1i2i3';
+
 
 % =========================================================================
 
 % hoc_name = 'conventional';  hoc_param = [8,8,4];
-% hoc_name = 'clustering';  hoc_param = [40 , 1]; % [bin count , sorting enabled]
-hoc_name = 'marg-moments';  hoc_param = [];
+hoc_name = 'clustering';  hoc_param = [40 , 1]; % [bin count , sorting enabled]
+% hoc_name = 'marg-moments';  hoc_param = [];
 
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;
@@ -57,7 +62,7 @@ hoc_update = 'none';
 % =========================================================================
 
 % hoc_dist_name = 'L1';
-% hoc_dist_name = 'L2';
+hoc_dist_name = 'L2';
 % hoc_dist_name = 'Linf';
 % hoc_dist_name = 'correlation';
 % hoc_dist_name = 'chi-square';
