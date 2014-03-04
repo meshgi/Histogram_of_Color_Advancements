@@ -48,7 +48,10 @@ for oracle_idx = 1:size(oracle,1)
         end
 
         disp('...... Initializing HOC') %=========================================
-        ctrs_name = ['automation/hoc_compiled/' colorspace_name '-' hoc_name num2str(hoc_param) '.mat'];
+        if ~exist('hoc_compiled', 'dir')
+            mkdir('hoc_compiled');
+        end
+        ctrs_name = [pwd '\hoc_compiled\' colorspace_name '-' hoc_name num2str(hoc_param) '.mat'];
         if ( exist(ctrs_name , 'file') == 2 && strcmp(hoc_name,'conventional') )
             load (ctrs_name);
         else

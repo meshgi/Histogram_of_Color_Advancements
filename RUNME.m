@@ -60,7 +60,7 @@ hoc_update = 'moving average';
 % hoc_dist_name = 'correlation';
 % hoc_dist_name = 'chi-square';
 % hoc_dist_name = 'intersection';
-hoc_dist_name = 'bhattacharyya';
+% hoc_dist_name = 'bhattacharyya';
 % hoc_dist_name = 'kl-divergance';
 % hoc_dist_name = 'diffusion';
 % hoc_dist_name = 'match';
@@ -73,6 +73,8 @@ hoc_dist_name = 'bhattacharyya';
 % hoc_dist_name = 'cosine';
 % hoc_dist_name = 'L0';
 % hoc_dist_name = 'noticeable';
+% hoc_dist_name = 'fractional';
+hoc_dist_name = 'canberra';
 
 
 % hoc_dist_name = 'L1,avg';

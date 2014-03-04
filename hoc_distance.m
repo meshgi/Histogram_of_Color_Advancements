@@ -53,6 +53,10 @@ function d = hoc_distance ( method, h1 , h2 , cof1 , cof2 , q)
             d = dist_l0 ( h1 , h2 );
         case 'noticeable'
             d = dist_noticeable ( h1 , h2 );
+        case 'fractional'
+            d = dist_fractional ( h1 , h2 , 0.25 );
+        case 'canberra'
+            d = dist_canberra ( h1 , h2 );
             
             
             
