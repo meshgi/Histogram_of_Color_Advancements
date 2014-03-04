@@ -5,6 +5,9 @@ function h = hoc ( method, img, ctrs , r , cs_name)
             img = uint8(255*rgb2hsv(img));
         case 'ycbcr'
             img = rgb2ycbcr(img);
+        case 'XYZ'
+            cform = makecform('srgb2xyz');
+            img = applycform(img,cform);
     end
 
     h = [];

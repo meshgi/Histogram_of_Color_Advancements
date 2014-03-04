@@ -29,6 +29,10 @@ function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
                     img = uint8(255*rgb2hsv(img));
                 case 'ycbcr'            
                     img = rgb2ycbcr(img);
+                case 'XYZ'
+                    cform = makecform('srgb2xyz');
+                    img = applycform(img,cform);
+                    
             end
                         
             bins = hoc_param(1);
@@ -56,6 +60,14 @@ function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
                     rgb_ctrs = 255*hsv2rgb(ctrs/255);
                 case 'ycbcr'
                     rgb_ctrs = ycbcr2rgb(uint8(ctrs));
+                case 'XYZ'
+                    % approximate reverse transform
+                    xyz2rgb = [0.41847, -0.15866,-0.082835; -0.091169, 0.25243, 0.015708; 0.00092090, -0.0025498, 0.17860];
+                    for i = 1:bins
+                        a = xyz2rgb * ctrs(i,:)';
+                        rgb_ctrs(i,:) = a';
+                    end
+                    
             end
             
     end
