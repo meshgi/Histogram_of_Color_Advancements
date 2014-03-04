@@ -46,11 +46,12 @@ hoc_name = 'conventional';  hoc_param = [8,8,4];
 % =========================================================================
 
 % hoc_update = 'none';
-hoc_update = 'moving average';
+% hoc_update = 'moving average';
 % hoc_update = 'nerd';
 % hoc_update = 'last 5';
 % hoc_update = 'average all';
 % hoc_update = 'update with memory';
+hoc_update = 'bhat';
 
 % =========================================================================
 
