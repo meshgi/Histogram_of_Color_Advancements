@@ -1,4 +1,6 @@
 function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
+    ctrs = [];     rgb_ctrs = [];     q = [];
+    
     switch (method)
         case {'conventional','conventional,g2,avg','conventional,g3,avg','conventional,g5,avg','conventional,g2,wei','conventional,g3,wei','conventional,g5,wei','conventional,g2','conventional,g3','conventional,g5'}
             m1 = hoc_param(1);  % single color channel quantization
@@ -60,6 +62,11 @@ end
 
 
 function Q = create_similarity_matrix (ctrs, cs_name)
+    
+    if isempty(ctrs)
+        Q = [];
+        return
+    end
 
     n = size(ctrs,1);
     for i = 1:n

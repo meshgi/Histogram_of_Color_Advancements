@@ -72,7 +72,26 @@ function h = hoc ( method, img, ctrs , r , cs_name)
             end
             h = hg;
             
+        case {'marg-moments'}
+            h1 = hoc_normal (img,[1:32:255 ; 1 1 1 1 1 1 1 1 ; 1 1 1 1 1 1 1 1]');
+            h2 = hoc_normal (img,[1 1 1 1 1 1 1 1 ; 1:32:255 ; 1 1 1 1 1 1 1 1]');
+            h3 = hoc_normal (img,[1 1 1 1 1 1 1 1 ; 1 1 1 1 1 1 1 1 ; 1:32:255]');
             
+            %h = [red moment(1..4),green moment(1..4),blue moment(1..4)] 
+            h(1)  = mean(h1);
+            h(2)  = var(h1);
+            h(3)  = skewness(h1);
+            h(4)  = kurtosis(h1);
+            h(5)  = mean(h2);
+            h(6)  = var(h2);
+            h(7)  = skewness(h2);
+            h(8)  = kurtosis(h2);
+            h(9)  = mean(h3);
+            h(10) = var(h3);
+            h(11) = skewness(h3);
+            h(12) = kurtosis(h3);
+            h = abs(h);
+            h = h / sum(h);
     end
     
     

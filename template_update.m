@@ -64,10 +64,11 @@ function new_template = template_update ( method , old_template , new_entry , fr
             new_template = (1/n) *((n-1)*old_template + new_entry);
             
         case 'bhat'
+            alpha = 4;
             for i = size(new_entry,1)
                 coeff(i) = dist_bhattacharyya(new_entry(i,:),old_template(i,:));
             end
-            coeff = exp(-10*coeff);
+            coeff = exp(-alpha*coeff);
             coeff_comp = ones(size(coeff)) - coeff;
             new_template = coeff_comp*old_template + coeff*new_entry;
     end

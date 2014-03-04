@@ -19,8 +19,9 @@ colorspace_name = 'rgb';
 
 % =========================================================================
 
-hoc_name = 'conventional';  hoc_param = [8,8,4];
+% hoc_name = 'conventional';  hoc_param = [8,8,4];
 % hoc_name = 'clustering';  hoc_param = [40 , 1]; % [bin count , sorting enabled]
+hoc_name = 'marg-moments';  hoc_param = [];
 
 % hoc_name = 'conventional,g2,avg';  hoc_param = 5;
 % hoc_name = 'clustering,g2,avg';  hoc_param = 40;
@@ -45,13 +46,13 @@ hoc_name = 'conventional';  hoc_param = [8,8,4];
 
 % =========================================================================
 
-% hoc_update = 'none';
+hoc_update = 'none';
 % hoc_update = 'moving average';
 % hoc_update = 'nerd';
 % hoc_update = 'last 5';
 % hoc_update = 'average all';
 % hoc_update = 'update with memory';
-hoc_update = 'bhat';
+% hoc_update = 'bhat';
 
 % =========================================================================
 
@@ -75,7 +76,7 @@ hoc_update = 'bhat';
 % hoc_dist_name = 'L0';
 % hoc_dist_name = 'noticeable';
 % hoc_dist_name = 'fractional';
-hoc_dist_name = 'canberra';
+% hoc_dist_name = 'canberra';
 
 
 % hoc_dist_name = 'L1,avg';
