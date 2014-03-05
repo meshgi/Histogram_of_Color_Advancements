@@ -35,6 +35,9 @@ function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
                 case 'lab'
                     cform = makecform('srgb2lab');
                     img = applycform(img,cform);
+                case 'gray'
+                    tmp = rgb2gray(img);
+                    img(:,:,1) = tmp; img(:,:,3) = tmp; img(:,:,3) = tmp;  
             end
                         
             bins = hoc_param(1);
@@ -70,6 +73,8 @@ function [ctrs, Q] = hoc_init ( method , init_frame_img , hoc_param , cs_name )
                         rgb_ctrs(i,:) = a';
                     end
                 case 'lab'
+                    rgb_ctrs = ctrs;
+                case 'gray'
                     rgb_ctrs = ctrs;
             end
             

@@ -14,12 +14,12 @@ option_verbose = false;
 
 obj_cnt = 3;
 % =========================================================================
-colorspace_name = 'rgb';
+% colorspace_name = 'rgb';
 % colorspace_name = 'hsv';
 % colorspace_name = 'ycbcr';
 % colorspace_name = 'XYZ';
 % colorspace_name = 'lab';
-% colorspace_name = 'i1i2i3';
+colorspace_name = 'gray';
 
 
 % =========================================================================

@@ -11,6 +11,9 @@ function h = hoc ( method, img, ctrs , r , cs_name)
         case 'lab'
             cform = makecform('srgb2lab');
             img = applycform(img,cform);
+        case 'gray'
+            tmp = rgb2gray(img);
+            img(:,:,1) = tmp; img(:,:,3) = tmp; img(:,:,3) = tmp;  
     end
 
     h = [];
