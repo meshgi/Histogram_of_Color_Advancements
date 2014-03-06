@@ -30,7 +30,7 @@ delimit = {'==========' , '=============', '==================', '==','==','=='}
 
 SSS = zeros(size(oracle,1),1);
 
-for oracle_idx = 1:2%size(oracle,1)
+for oracle_idx = 1:size(oracle,1)
     disp(' '); disp(' '); disp(['Experiment ' num2str(oracle_idx)]);
     disp([headers;delimit;oracle(oracle_idx,1:6)]);
 
@@ -39,7 +39,8 @@ for oracle_idx = 1:2%size(oracle,1)
     hoc_dist_name = oracle{oracle_idx,3};
     hoc_param = [oracle{oracle_idx,4},oracle{oracle_idx,5},oracle{oracle_idx,6}];
 
-    for vid = 1:2%length(video_database)
+    for vid = 1:length(video_database)
+        tic
         video_name = video_database{vid};
         disp(' ')
         disp(['... Reading video ' video_name]) %==================================
@@ -47,6 +48,7 @@ for oracle_idx = 1:2%size(oracle,1)
 
         if (length(vid_sz) == 2 || vid_sz(3) == 1)
             disp('...... Grayscale Video - Skip!')
+            SS(vid) = 0;
             continue;
         end
 
@@ -63,7 +65,7 @@ for oracle_idx = 1:2%size(oracle,1)
         end
 
         disp(['...... Processing ' num2str(frames) ' frames']) %==================
-        for fr = 1:2%frames
+        for fr = 1:frames
             [img , gt_img , gt_bb] = video_frame ( database_path, video_name, gt , fr );
             disp (['...... Frame ' num2str(fr)]);
 
@@ -80,7 +82,7 @@ for oracle_idx = 1:2%size(oracle,1)
     %         drawnow;
 
 %             disp('......... Creating Box Grid') %=================================
-            [boxes , gt_idx] = sliding_window (vid_sz, gt_bb,0.5);
+            [boxes , gt_idx] = sliding_window (vid_sz, gt_bb , 0.5);
             gt_hoc = hoc ( hoc_name , gt_img , ctrs , 0 , colorspace_name);
             
             % VIS
@@ -94,7 +96,7 @@ for oracle_idx = 1:2%size(oracle,1)
     %         pause
 
             box_d = [];
-            for b = 1:size(boxes,1) %==========================================
+            parfor b = 1:size(boxes,1) %==========================================
                 box_img = bb_content(img,boxes(b,:));
                 box_hoc = hoc ( hoc_name , box_img , ctrs , 0 , colorspace_name);
                 box_d(b) = hoc_distance ( hoc_dist_name, template, box_hoc, 0, 0 , q);
@@ -142,6 +144,8 @@ for oracle_idx = 1:2%size(oracle,1)
 
         end % fr
         SS(vid) = mean(S(:));
+        
+        toc %timer
     end % vid
     SSv = SS(SS ~= 0);
     SSS(oracle_idx) = mean(SSv(:));
