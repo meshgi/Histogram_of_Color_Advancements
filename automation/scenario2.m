@@ -5,9 +5,9 @@ close all;
 addpath(genpath('./..'));
 
 database_path = 'D:\scenario 2\';
-oracle_file = 'in sc2.xlsx';
+oracle_file = 'in - all CS - all MU.xlsx';
 
-real_tracking = true;
+real_tracking = false;
 
 scale = 1;
 
@@ -17,6 +17,7 @@ hoc_update = 'none';
 % hoc_update = 'last 5';
 % hoc_update = 'average all';
 % hoc_update = 'update with memory';
+% hoc_update = 'bhat';
 
 
 disp('Reading Video List') %===============================================
@@ -27,16 +28,18 @@ disp('Reading Experiment Oracle') %========================================
 headers = {'Colorspace' , 'Histogramming', 'Similarity Measure', 'P1','P2','P3'};
 delimit = {'==========' , '=============', '==================', '==','==','=='};
 
-for oracle_idx = 1:size(oracle,1)
-    disp(['Experiment ' num2str(oracle_idx)]);
-    disp([headers;delimit;oracle(oracle_idx,:)]);
+SSS = zeros(size(oracle,1),1);
+
+for oracle_idx = 1:2%size(oracle,1)
+    disp(' '); disp(' '); disp(['Experiment ' num2str(oracle_idx)]);
+    disp([headers;delimit;oracle(oracle_idx,1:6)]);
 
     colorspace_name = oracle{oracle_idx,1};
     hoc_name = oracle{oracle_idx,2};  
     hoc_dist_name = oracle{oracle_idx,3};
     hoc_param = [oracle{oracle_idx,4},oracle{oracle_idx,5},oracle{oracle_idx,6}];
 
-    for vid = 1:length(video_database)
+    for vid = 1:2%length(video_database)
         video_name = video_database{vid};
         disp(' ')
         disp(['... Reading video ' video_name]) %==================================
@@ -60,7 +63,7 @@ for oracle_idx = 1:size(oracle,1)
         end
 
         disp(['...... Processing ' num2str(frames) ' frames']) %==================
-        for fr = 1:10%frames
+        for fr = 1:2%frames
             [img , gt_img , gt_bb] = video_frame ( database_path, video_name, gt , fr );
             disp (['...... Frame ' num2str(fr)]);
 
@@ -76,7 +79,7 @@ for oracle_idx = 1:size(oracle,1)
     %         set(gcf,'Name',num2str(fr));
     %         drawnow;
 
-            disp('......... Creating Box Grid') %=================================
+%             disp('......... Creating Box Grid') %=================================
             [boxes , gt_idx] = sliding_window (vid_sz, gt_bb,0.5);
             gt_hoc = hoc ( hoc_name , gt_img , ctrs , 0 , colorspace_name);
             
@@ -101,7 +104,7 @@ for oracle_idx = 1:size(oracle,1)
             ranking = find(box_idx == gt_idx);
             score = double(ranking) / length (box_idx);
 
-            disp(['......... Score: ' num2str(score)]);
+%             disp(['......... Score: ' num2str(score)]);
 
             % VIS
     %         score_history(fr) = score;
@@ -140,13 +143,17 @@ for oracle_idx = 1:size(oracle,1)
         end % fr
         SS(vid) = mean(S(:));
     end % vid
-    SSS(oracle_idx) = mean(SS(:));
+    SSv = SS(SS ~= 0);
+    SSS(oracle_idx) = mean(SSv(:));
+    oracle{oracle_idx,7} = SSS(oracle_idx);
 end % oracle
 
-% headers = {'Colorspace' , 'Histogramming', 'Similarity Measure', 'P1','P2','P3','MU: non','MU: mov','MU: nrd','MU: que','MU: all','MU: mem'};
-% 
-% xlswrite('automation/out.xlsx',[headers;t])
-% close all
+headers = {'Colorspace' , 'Histogramming', 'Similarity Measure', 'P1','P2','P3','MU: non'}; % ,'MU: mov','MU: nrd','MU: que','MU: all','MU: mem'
+
+xlswrite(['out' oracle_file(3:end)],[headers;oracle]);
+
+disp (' ');   disp('Accomplished!');
+close all
 
 
 
